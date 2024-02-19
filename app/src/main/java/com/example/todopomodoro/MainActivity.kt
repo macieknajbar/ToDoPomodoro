@@ -57,12 +57,12 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Screen() {
     Column {
-        val items = mutableListOf(
+        val items = listOf(
             "Finish Android course",
             "Second item"
         )
         var itemsState by remember { mutableStateOf(items) }
-        var value by remember { mutableStateOf("") }
+        var value by remember { mutableStateOf("Task") }
 
 
         for (i in itemsState) {
@@ -84,9 +84,8 @@ private fun Screen() {
             onValueChange = { value = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                items.add(value)
+                itemsState = items + value
                 value = ""
-                itemsState = items
             })
         )
     }
