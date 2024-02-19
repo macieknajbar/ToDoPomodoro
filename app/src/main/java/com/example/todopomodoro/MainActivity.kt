@@ -66,18 +66,25 @@ private fun Screen() {
             Item(item)
         }
 
-        var value by remember { mutableStateOf("Finish Android course") }
-        TextField(
-            value = value,
-            onValueChange = { value = it },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                itemsState = itemsState + value
-                value = ""
-            }),
-            modifier = Modifier.fillMaxWidth()
-        )
+        NewItemField(itemsState)
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun NewItemField(itemsState: List<String>) {
+    var itemsState1 = itemsState
+    var value by remember { mutableStateOf("Finish Android course") }
+    TextField(
+        value = value,
+        onValueChange = { value = it },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            itemsState1 = itemsState1 + value
+            value = ""
+        }),
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
