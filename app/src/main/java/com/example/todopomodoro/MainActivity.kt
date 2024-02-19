@@ -73,7 +73,7 @@ private fun Screen() {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun ScreenPreview() {
     ToDoPomodoroTheme {
         Screen()
