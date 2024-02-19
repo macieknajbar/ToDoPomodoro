@@ -21,7 +21,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
-val items = mutableListOf<String>()
-val itemsState = mutableStateOf(listOf<String>())
-
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -57,30 +52,39 @@ class MainActivity : ComponentActivity() {
 
 }
 
+// "remember" must be in composable scope
+//var itemsState by remember { mutableStateOf(listOf<String>()) }
+// replace by state
+var itemsState = mutableStateOf(listOf<String>())
+
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun Screen() {
     Column {
-        var itemsState by remember { mutableStateOf(listOf<String>()) }
-        for (item in itemsState) {
+        // Increasing scope
+        //var itemsState by remember { mutableStateOf(listOf<String>()) }
+        // add .value
+        for (item in itemsState.value) {
             Item(item)
         }
 
-        NewItemField(itemsState)
+        // Unnecessary param
+        //NewItemField(itemsState.value)
+        NewItemField()
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun NewItemField(itemsState: List<String>) {
-    var itemsState1 = itemsState
+private fun NewItemField() {
+    // rename to state name and remove this line
+    //var itemsState = itemsState
     var value by remember { mutableStateOf("Finish Android course") }
     TextField(
         value = value,
         onValueChange = { value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            itemsState1 = itemsState1 + value
+            itemsState.value = itemsState.value + value
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()
@@ -182,16 +186,16 @@ fun ScreenPreview() {
 //        ),
 //    )
 //}
-
-fun onDoneClicked(value: String) {
-    items.add(value)
-    itemsState += value
-}
-
-private operator fun <T> MutableState<List<T>>.plusAssign(value: T) {
-    this.value = this.value + value
-}
-
+//
+//fun onDoneClicked(value: String) {
+//    items.add(value)
+//    itemsState += value
+//}
+//
+//private operator fun <T> MutableState<List<T>>.plusAssign(value: T) {
+//    this.value = this.value + value
+//}
+//
 //@Preview(showBackground = true)
 //@Composable
 //fun ItemPreview() {
