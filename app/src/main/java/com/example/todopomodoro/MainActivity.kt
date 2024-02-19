@@ -71,7 +71,10 @@ private fun Screen() {
                     checked = false,
                     onCheckedChange = null
                 )
-                Text(text = i)
+                Text(
+                    text = i,
+                    modifier = Modifier.weight(1f)
+                )
                 Text(text = "19/02/24")
                 Icon(
                     imageVector = Icons.Sharp.PlayArrow,
