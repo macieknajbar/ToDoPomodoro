@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Checkbox
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
@@ -62,13 +64,23 @@ private fun Screen() {
 
         for (i in items) {
             Row {
-                Checkbox(checked = false, onCheckedChange = null)
+                Checkbox(
+                    checked = false,
+                    onCheckedChange = null
+                )
                 Text(text = i)
                 Text(text = "19/02/24")
-                Icon(imageVector = Icons.Sharp.PlayArrow, contentDescription = "run a timer")
+                Icon(
+                    imageVector = Icons.Sharp.PlayArrow,
+                    contentDescription = "run a timer"
+                )
             }
         }
-        TextField(value = value, onValueChange = { value = it })
+        TextField(
+            value = value,
+            onValueChange = { value = it },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+        )
     }
 }
 
