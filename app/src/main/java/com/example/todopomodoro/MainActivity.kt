@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,23 +53,15 @@ class MainActivity : ComponentActivity() {
 
 }
 
-// "remember" must be in composable scope
-//var itemsState by remember { mutableStateOf(listOf<String>()) }
-// replace by state
 var itemsState = mutableStateOf(listOf<String>())
 
 @Composable
 private fun Screen() {
     Column {
-        // Increasing scope
-        //var itemsState by remember { mutableStateOf(listOf<String>()) }
-        // add .value
         for (item in itemsState.value) {
             Item(item)
         }
 
-        // Unnecessary param
-        //NewItemField(itemsState.value)
         NewItemField()
     }
 }
@@ -76,19 +69,21 @@ private fun Screen() {
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun NewItemField() {
-    // rename to state name and remove this line
-    //var itemsState = itemsState
     var value by remember { mutableStateOf("Finish Android course") }
     TextField(
         value = value,
         onValueChange = { value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            itemsState.value = itemsState.value + value
+            itemsState.add(value)
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()
     )
+}
+
+private fun MutableState<List<String>>.add(value: String) {
+    this.value = this.value + value
 }
 
 @Composable
