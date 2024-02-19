@@ -3,18 +3,22 @@ package com.example.todopomodoro
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 val items = mutableListOf<String>()
@@ -32,14 +36,31 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var value by remember { mutableStateOf("") }
-
-                    TextField(value = value, onValueChange = { value = it })
-                    Text(text = "Finish Android course") // Not quite above
-                    Text(text = "Second item") // Overlapping
+                    Screen()
                 }
             }
         }
+    }
+
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun Screen() {
+    Column {
+        var value by remember { mutableStateOf("") }
+
+        Text(text = "Finish Android course") // Not quite above
+        Text(text = "Second item") // Overlapping
+        TextField(value = value, onValueChange = { value = it })
+    }
+}
+
+@Composable
+@Preview
+fun ScreenPreview() {
+    ToDoPomodoroTheme {
+        Screen()
     }
 }
 
