@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,7 +67,7 @@ private fun Screen() {
             )
         }
         for (i in itemsState) {
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 var checked by remember { mutableStateOf(false) }
                 Checkbox(
                     checked = checked,
