@@ -1,12 +1,14 @@
 package com.example.todopomodoro
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.PlayArrow
@@ -55,14 +57,15 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Screen() {
     Column {
-        val items = listOf(
+        val items = mutableListOf(
             "Finish Android course",
             "Second item"
         )
+        var itemsState by remember { mutableStateOf(items) }
         var value by remember { mutableStateOf("") }
 
 
-        for (i in items) {
+        for (i in itemsState) {
             Row {
                 Checkbox(
                     checked = false,
@@ -79,7 +82,12 @@ private fun Screen() {
         TextField(
             value = value,
             onValueChange = { value = it },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {
+                items.add(value)
+                value = ""
+                itemsState = items
+            })
         )
     }
 }
