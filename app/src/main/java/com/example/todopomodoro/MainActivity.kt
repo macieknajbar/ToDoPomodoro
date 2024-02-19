@@ -1,7 +1,6 @@
 package com.example.todopomodoro
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -63,32 +62,8 @@ class MainActivity : ComponentActivity() {
 private fun Screen() {
     Column {
         var itemsState by remember { mutableStateOf(listOf<String>()) }
-        for (i in itemsState) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                var checked by remember { mutableStateOf(false) }
-                Checkbox(
-                    checked = checked,
-                    onCheckedChange = {
-                        checked = it
-                    }
-                )
-                Text(
-                    text = i,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp),
-                    softWrap = false,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(text = "No Date")
-                Icon(
-                    imageVector = Icons.Sharp.PlayArrow,
-                    contentDescription = "run a timer",
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(8.dp)
-                )
-            }
+        for (item in itemsState) {
+            Item(item)
         }
 
         var value by remember { mutableStateOf("Finish Android course") }
@@ -101,6 +76,35 @@ private fun Screen() {
                 value = ""
             }),
             modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun Item(item: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        var checked by remember { mutableStateOf(false) }
+        Checkbox(
+            checked = checked,
+            onCheckedChange = {
+                checked = it
+            }
+        )
+        Text(
+            text = item,
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp),
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(text = "No Date")
+        Icon(
+            imageVector = Icons.Sharp.PlayArrow,
+            contentDescription = "run a timer",
+            modifier = Modifier
+                .size(48.dp)
+                .padding(8.dp)
         )
     }
 }
