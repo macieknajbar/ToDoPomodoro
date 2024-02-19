@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TextField(value = "", onValueChange = {})
+                    TextField(value = "This is value", onValueChange = {})
 //                    Column {
 //                        for (item in itemsState.value) {
 //                            Item(item)
