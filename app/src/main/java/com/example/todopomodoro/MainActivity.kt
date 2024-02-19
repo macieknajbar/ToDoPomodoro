@@ -75,16 +75,30 @@ private fun NewItemField() {
         onValueChange = { value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            itemsState += value
+            // below doesn't allow for generics, because we don't know if it's a list
+//            itemsState += value
+            // generic solution, but doesn't make sense "+= { it }"
+//            itemsState += { it + value }
+            itemsState.update { it + value }
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()
     )
 }
 
-private operator fun MutableState<List<String>>.plusAssign(value: String) {
-    this.value = this.value + value
+// remove
+//private operator fun MutableState<List<String>>.plusAssign(value: String) {
+//    this.value = this.value + value
+//}
+
+private fun <T> MutableState<T>.update(block: (T) -> T) {
+    value = block(value)
 }
+
+// remove - doesn't make sense when reading
+//private operator fun <T> MutableState<T>.plusAssign(block: (T) -> T) {
+//    value = block(value)
+//}
 
 @Composable
 private fun Item(item: String) {
