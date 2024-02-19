@@ -57,17 +57,17 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Screen() {
     Column {
-        val items = listOf(
-            "Finish Android course",
-            "Second item"
-        )
-        var itemsState by remember { mutableStateOf(items) }
-        var value by remember { mutableStateOf("Task") }
-        var checked by remember { mutableStateOf(false) }
-
-
+        var itemsState by remember {
+            mutableStateOf(
+                listOf(
+                    "Finish Android course",
+                    "Second item"
+                )
+            )
+        }
         for (i in itemsState) {
             Row {
+                var checked by remember { mutableStateOf(false) }
                 Checkbox(
                     checked = checked,
                     onCheckedChange = {
@@ -85,12 +85,14 @@ private fun Screen() {
                 )
             }
         }
+
+        var value by remember { mutableStateOf("Task") }
         TextField(
             value = value,
             onValueChange = { value = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                itemsState = items + value
+                itemsState = itemsState + value
                 value = ""
             }),
             modifier = Modifier.fillMaxWidth()
