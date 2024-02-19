@@ -61,7 +61,12 @@ private fun Screen() {
 
 
         for (i in items) {
-            Text(text = i)
+            Row {
+                Checkbox(checked = false, onCheckedChange = null)
+                Text(text = i)
+                Text(text = "19/02/24")
+                Icon(imageVector = Icons.Sharp.PlayArrow, contentDescription = "run a timer")
+            }
         }
         TextField(value = value, onValueChange = { value = it })
     }
