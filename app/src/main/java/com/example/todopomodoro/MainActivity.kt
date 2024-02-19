@@ -86,7 +86,8 @@ private fun Screen() {
             keyboardActions = KeyboardActions(onDone = {
                 itemsState = items + value
                 value = ""
-            })
+            }),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
