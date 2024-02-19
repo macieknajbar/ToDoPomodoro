@@ -63,13 +63,16 @@ private fun Screen() {
         )
         var itemsState by remember { mutableStateOf(items) }
         var value by remember { mutableStateOf("Task") }
+        var checked by remember { mutableStateOf(false) }
 
 
         for (i in itemsState) {
             Row {
                 Checkbox(
-                    checked = false,
-                    onCheckedChange = null
+                    checked = checked,
+                    onCheckedChange = {
+                        checked = it
+                    }
                 )
                 Text(
                     text = i,
