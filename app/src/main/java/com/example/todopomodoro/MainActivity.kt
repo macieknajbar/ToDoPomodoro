@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -31,15 +32,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    // It didn't work
-//                    var value = "This is value"
+                    var value by remember { mutableStateOf("") }
 
-                    // Introduction of mutableStateOf("")
-                    // AND you must REMEMBER! because it's not intuitive why mutable state is required, same as remember is not intuitive.
-                    var value by remember { mutableStateOf("This is value") }
-
-                    // Requires String, not MutableState, so change to "by remember"
                     TextField(value = value, onValueChange = { value = it })
+                    Text(text = "Finish Android course") // Not quite above
+                    Text(text = "Second item") // Overlapping
                 }
             }
         }
