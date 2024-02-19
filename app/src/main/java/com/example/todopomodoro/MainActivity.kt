@@ -75,14 +75,14 @@ private fun NewItemField() {
         onValueChange = { value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            itemsState.add(value)
+            itemsState += value
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()
     )
 }
 
-private fun MutableState<List<String>>.add(value: String) {
+private operator fun MutableState<List<String>>.plusAssign(value: String) {
     this.value = this.value + value
 }
 
