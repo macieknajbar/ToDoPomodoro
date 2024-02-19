@@ -62,13 +62,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Screen() {
     Column {
-        var itemsState by remember {
-            mutableStateOf(
-                listOf(
-                    "Finish Android course",
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."                )
-            )
-        }
+        var itemsState by remember { mutableStateOf(listOf<String>()) }
         for (i in itemsState) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 var checked by remember { mutableStateOf(false) }
@@ -80,7 +74,9 @@ private fun Screen() {
                 )
                 Text(
                     text = i,
-                    modifier = Modifier.weight(1f).padding(end = 8.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
                     softWrap = false,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -95,7 +91,7 @@ private fun Screen() {
             }
         }
 
-        var value by remember { mutableStateOf("Task") }
+        var value by remember { mutableStateOf("Finish Android course") }
         TextField(
             value = value,
             onValueChange = { value = it },
