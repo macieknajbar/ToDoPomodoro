@@ -66,7 +66,7 @@ private fun Screen() {
 
 
         for (i in itemsState) {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row {
                 Checkbox(
                     checked = false,
                     onCheckedChange = null
