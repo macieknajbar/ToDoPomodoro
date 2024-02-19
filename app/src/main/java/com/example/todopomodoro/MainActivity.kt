@@ -81,7 +81,7 @@ private fun Screen() {
                 Text(
                     text = i,
                     modifier = Modifier.weight(1f).padding(end = 8.dp),
-                    maxLines = 1,
+                    softWrap = false,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(text = "No Date")
