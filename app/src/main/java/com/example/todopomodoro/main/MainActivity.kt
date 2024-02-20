@@ -62,16 +62,13 @@ private fun Screen(mainPresenter: MainPresenter) {
             Item(item)
         }
 
-        NewItemField(mainPresenter = mainPresenter)
+        NewItemField { mainPresenter.onDoneClicked(it) }
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun NewItemField(
-    mainPresenter: MainPresenter,
-    onDoneClicked: (String) -> Unit = { mainPresenter.onDoneClicked(it) }
-) {
+private fun NewItemField(onDoneClicked: (String) -> Unit) {
     var value by remember { mutableStateOf("Finish Android course") }
     TextField(
         value = value,
