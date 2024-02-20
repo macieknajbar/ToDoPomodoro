@@ -35,7 +35,7 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val presenter = MainPresenter()
+    private val presenter = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

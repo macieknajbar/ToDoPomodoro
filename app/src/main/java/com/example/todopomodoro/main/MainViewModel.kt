@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.todopomodoro.repository.ItemsRepository
 import com.example.todopomodoro.utils.update
 
-class MainPresenter(
+class MainViewModel(
     private val itemsRepository: ItemsRepository = ItemsRepository,
 ) {
 

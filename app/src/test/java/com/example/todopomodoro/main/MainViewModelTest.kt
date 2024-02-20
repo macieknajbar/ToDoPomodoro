@@ -7,7 +7,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
-internal class MainPresenterTest {
+internal class MainViewModelTest {
 
     @Test
     fun `ON onDoneClicked SHOULD update state`() {
@@ -17,7 +17,7 @@ internal class MainPresenterTest {
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
-        val sut = MainPresenter(
+        val sut = MainViewModel(
             itemsRepository = itemsRepository
         ).apply { onDoneClicked(value) }
 
