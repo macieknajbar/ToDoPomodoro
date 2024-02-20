@@ -47,7 +47,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen { presenter.onDoneClicked(it) }
+                    Screen(
+                        items = itemsState.value,
+                        onDoneClicked = { presenter.onDoneClicked(it) },
+                    )
                 }
             }
         }
@@ -56,9 +59,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Screen(onDoneClicked: (String) -> Unit = {}) {
+private fun Screen(
+    items: List<String> = emptyList(),
+    onDoneClicked: (String) -> Unit = {},
+) {
     Column {
-        for (item in itemsState.value) {
+        for (item in items) {
             Item(item)
         }
 
@@ -115,7 +121,7 @@ private fun Item(item: String) {
 @Preview(showBackground = true)
 fun ScreenPreview() {
     ToDoPomodoroTheme {
-        Screen()
+        Screen(listOf("Task 1", "Task 2"))
     }
 }
 
