@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen(presenter)
+                    Screen(mainPresenter = presenter)
                 }
             }
         }
@@ -62,20 +62,23 @@ private fun Screen(mainPresenter: MainPresenter) {
             Item(item)
         }
 
-        NewItemField(mainPresenter)
+        NewItemField(mainPresenter = mainPresenter)
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun NewItemField(mainPresenter: MainPresenter) {
+private fun NewItemField(
+    mainPresenter: MainPresenter,
+    onDoneClicked: (String) -> Unit = { mainPresenter.onDoneClicked(it) }
+) {
     var value by remember { mutableStateOf("Finish Android course") }
     TextField(
         value = value,
         onValueChange = { value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            mainPresenter.onDoneClicked(value)
+            onDoneClicked(value)
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()
@@ -115,7 +118,7 @@ private fun Item(item: String) {
 @Preview(showBackground = true)
 fun ScreenPreview() {
     ToDoPomodoroTheme {
-        Screen(MainPresenter())
+        Screen(mainPresenter = MainPresenter())
     }
 }
 
