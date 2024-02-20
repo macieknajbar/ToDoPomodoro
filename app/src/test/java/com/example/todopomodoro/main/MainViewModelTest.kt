@@ -1,6 +1,6 @@
 package com.example.todopomodoro.main
 
-import com.example.todopomodoro.repository.ItemsRepository
+import com.example.todopomodoro.repository.Repository
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -12,7 +12,7 @@ internal class MainViewModelTest {
     @Test
     fun `ON onDoneClicked SHOULD update state`() {
         val value = "Hello world!"
-        val itemsRepository: ItemsRepository = mock()
+        val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
 
         `when`(itemsRepository.getAll()).thenReturn(items)
