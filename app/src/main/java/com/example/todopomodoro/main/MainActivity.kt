@@ -33,9 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
-class MainActivity : ComponentActivity(), MainContract.View {
+class MainActivity : ComponentActivity() {
 
-    private val presenter = MainPresenter(view = this)
+    private val presenter = MainPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +54,6 @@ class MainActivity : ComponentActivity(), MainContract.View {
             }
         }
     }
-
-    override fun updateItems(items: List<String>) {
-    }
-
 }
 
 @Composable

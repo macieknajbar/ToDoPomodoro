@@ -14,17 +14,14 @@ internal class MainPresenterTest {
         val value = "Hello world!"
         val itemsRepository: ItemsRepository = mock()
         val items = listOf("item 1", "item 2")
-        val view: MainContract.View = mock()
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
         val sut = MainPresenter(
-            itemsRepository = itemsRepository,
-            view = view
+            itemsRepository = itemsRepository
         ).apply { onDoneClicked(value) }
 
         verify(itemsRepository).add(value)
-        verify(view).updateItems(items)
         assertEquals(
             items,
             sut.items.value
