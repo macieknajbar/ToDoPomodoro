@@ -5,11 +5,12 @@ import com.example.todopomodoro.utils.update
 
 class MainPresenter {
     fun onDoneClicked(value: String) {
-        UpdateState(value)
+        UpdateState(value).exec(value)
     }
 
     class UpdateState(value: String) {
-        init {
+
+        fun exec(value: String) {
             itemsState.update { it + value }
         }
     }
