@@ -17,7 +17,7 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel = mainViewModel()
+    private val viewModel by lazy { mainViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
