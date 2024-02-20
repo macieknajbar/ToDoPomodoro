@@ -16,7 +16,7 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val presenter = MainViewModel()
+    private val viewModel = MainViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +28,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Screen(
-                        items = presenter.items.value,
-                        onDoneClicked = { presenter.onDoneClicked(it) },
+                        items = viewModel.items.value,
+                        onDoneClicked = viewModel::onDoneClicked,
                     )
                 }
             }

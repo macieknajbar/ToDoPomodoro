@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,5 +34,7 @@ fun NewItemField(onDoneClicked: (String) -> Unit) {
 @Composable
 @Preview
 private fun NewItemFieldPreview() {
-    NewItemField(onDoneClicked = {})
+    ToDoPomodoroTheme {
+        NewItemField(onDoneClicked = {})
+    }
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 @Composable
 fun Item(item: String) {
@@ -49,7 +50,9 @@ fun Item(item: String) {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 private fun ItemPreview() {
-    Item("Text")
+    ToDoPomodoroTheme {
+        Item("Text")
+    }
 }
