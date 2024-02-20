@@ -115,8 +115,7 @@ private fun Item(item: String) {
 @Preview(showBackground = true)
 fun ScreenPreview() {
     ToDoPomodoroTheme {
-        val mainPresenter = MainPresenter()
-        Screen { mainPresenter.onDoneClicked(it) }
+        Screen { }
     }
 }
 
