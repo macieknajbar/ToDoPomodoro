@@ -3,14 +3,15 @@ package com.example.todopomodoro.main
 import com.example.todopomodoro.repository.itemsState
 import com.example.todopomodoro.utils.update
 
-class MainPresenter {
+class MainPresenter(
+    private val updateState: UpdateState = UpdateState(),
+) {
     fun onDoneClicked(value: String) {
-        UpdateState().exec(value)
+        updateState.exec(value)
     }
 
-    class UpdateState {
-
-        fun exec(value: String) {
+    open class UpdateState {
+        open fun exec(value: String) {
             itemsState.update { it + value }
         }
     }
