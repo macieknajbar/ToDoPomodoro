@@ -6,17 +6,21 @@ import com.example.todopomodoro.utils.update
 
 class MainPresenter(
     private val updateState: UpdateState = UpdateState(),
-    val view: MainContract.View,
-    val getAllItems: GetAllItems = GetItems(),
+    private val view: MainContract.View,
+    private val getAllItems: GetAllItems = updateState,
 ) {
     fun onDoneClicked(value: String) {
         updateState.exec(value)
         view.updateItems(getAllItems.exec())
     }
 
-    class UpdateState {
+    class UpdateState: GetAllItems {
         fun exec(value: String) {
             itemsState.update { it + value }
+        }
+
+        override fun exec(): List<String> {
+            return itemsState.value
         }
     }
 
