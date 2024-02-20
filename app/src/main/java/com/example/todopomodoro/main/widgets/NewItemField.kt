@@ -32,6 +32,6 @@ fun NewItemField(onDoneClicked: (String) -> Unit) {
 
 @Composable
 @Preview
-fun NewItemFieldPreview() {
+private fun NewItemFieldPreview() {
     NewItemField(onDoneClicked = {})
 }
