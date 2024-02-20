@@ -1,6 +1,5 @@
 package com.example.todopomodoro.main
 
-import com.example.todopomodoro.repository.GetAllItems
 import com.example.todopomodoro.repository.ItemsRepository
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -15,14 +14,12 @@ internal class MainPresenterTest {
         val itemsRepository: ItemsRepository = mock()
         val items = listOf("item 1", "item 2")
         val view: MainContract.View = mock()
-        val getAllItems: GetAllItems = mock()
 
-        `when`(getAllItems.getAll()).thenReturn(items)
+        `when`(itemsRepository.getAll()).thenReturn(items)
 
         MainPresenter(
-            view = view,
             itemsRepository = itemsRepository,
-            getAllItems = getAllItems
+            view = view
         ).onDoneClicked(value)
 
         verify(itemsRepository).add(value)

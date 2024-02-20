@@ -31,7 +31,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.todopomodoro.repository.itemsState
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 class MainActivity : ComponentActivity(), MainContract.View {
