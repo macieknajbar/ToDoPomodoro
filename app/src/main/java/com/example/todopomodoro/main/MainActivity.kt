@@ -55,7 +55,7 @@ private fun Screen(
 
 @Composable
 @Preview(showBackground = true)
-fun ScreenPreview() {
+private fun ScreenPreview() {
     ToDoPomodoroTheme {
         Screen(listOf("Task 1", "Task 2"))
     }
