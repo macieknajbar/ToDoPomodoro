@@ -1,33 +1,19 @@
 package com.example.todopomodoro.main
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 internal class MainPresenterTest {
 
     @Test
     fun `ON onDoneClicked SHOULD update state`() {
         val value = "Hello world!"
-        val updateState = UpdateStateMock(value)
+        val updateState: MainPresenter.UpdateState = mock()
 
         MainPresenter(updateState = updateState)
             .onDoneClicked(value)
 
-        updateState.verify()
-    }
-
-    class UpdateStateMock(val expected: String): MainPresenter.UpdateState() {
-        private var counter = 0
-        private lateinit var actual: String
-
-        override fun exec(value: String) {
-            counter++
-            actual = value
-        }
-
-        fun verify() {
-            assertEquals(1, counter)
-            assertEquals(expected, actual)
-        }
+        verify(updateState).exec(value)
     }
 }
