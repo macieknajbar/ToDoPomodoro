@@ -75,7 +75,7 @@ private fun NewItemField() {
         onValueChange = { value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            MainPresenter().onDone(value)
+            MainPresenter().onDoneClicked(value)
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()

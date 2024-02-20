@@ -1,7 +1,7 @@
 package com.example.todopomodoro.main
 
 class MainPresenter {
-    fun onDone(value: String) {
+    fun onDoneClicked(value: String) {
         itemsState.update { it + value }
     }
 }
