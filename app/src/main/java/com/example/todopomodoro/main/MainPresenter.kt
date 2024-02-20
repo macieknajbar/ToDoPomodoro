@@ -11,7 +11,6 @@ class MainPresenter(
 ) {
     fun onDoneClicked(value: String) {
         updateState.exec(value)
-        val items = listOf("item 1")
         view.updateItems(getAllItems.exec())
     }
 

@@ -36,6 +36,7 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 class MainActivity : ComponentActivity(), MainContract.View {
 
+    private val items = mutableStateOf(emptyList<String>())
     private val presenter = MainPresenter(view = this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Screen(
-                        items = itemsState.value,
+                        items = items.value,
                         onDoneClicked = { presenter.onDoneClicked(it) },
                     )
                 }
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
     }
 
     override fun updateItems(items: List<String>) {
-
+        this.items.value = items
     }
 
 }
