@@ -27,4 +27,21 @@ internal class MainViewModelTest {
             sut.items.value
         )
     }
+
+    @Test
+    fun `ON init SHOULD get all items`() {
+        val itemsRepository: Repository = mock()
+        val items = listOf("item 1", "item 2")
+
+        `when`(itemsRepository.getAll()).thenReturn(items)
+
+        val sut = MainViewModel(
+            itemsRepository = itemsRepository
+        )
+
+        assertEquals(
+            items,
+            sut.items.value
+        )
+    }
 }
