@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
-var itemsState = mutableStateOf(listOf<String>())
+val itemsState = mutableStateOf(listOf<String>())
 
 @Composable
 private fun Screen() {
@@ -76,14 +76,13 @@ private fun NewItemField() {
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
             MainPresenter().onDone(value)
-            itemsState.update { it + value }
             value = ""
         }),
         modifier = Modifier.fillMaxWidth()
     )
 }
 
-private fun <T> MutableState<T>.update(block: (T) -> T) {
+fun <T> MutableState<T>.update(block: (T) -> T) {
     value = block(value)
 }
 
