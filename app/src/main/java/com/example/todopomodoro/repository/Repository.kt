@@ -1,6 +1,6 @@
 package com.example.todopomodoro.repository
 
-interface GetAllItems {
+interface Repository {
+    fun add(record: String)
     fun getAll(): List<String>
-
 }
