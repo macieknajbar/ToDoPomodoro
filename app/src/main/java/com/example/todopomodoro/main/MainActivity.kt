@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity(), MainContract.View {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Screen(
-                        items = items.value,
+                        items = presenter.items.value,
                         onDoneClicked = { presenter.onDoneClicked(it) },
                     )
                 }

@@ -1,6 +1,7 @@
 package com.example.todopomodoro.main
 
 import com.example.todopomodoro.repository.ItemsRepository
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
@@ -17,12 +18,16 @@ internal class MainPresenterTest {
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
-        MainPresenter(
+        val sut = MainPresenter(
             itemsRepository = itemsRepository,
             view = view
-        ).onDoneClicked(value)
+        ).apply { onDoneClicked(value) }
 
         verify(itemsRepository).add(value)
         verify(view).updateItems(items)
+        assertEquals(
+            items,
+            sut.items.value
+        )
     }
 }
