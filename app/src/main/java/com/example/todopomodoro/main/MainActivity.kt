@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Screen(onDoneClicked: (String) -> Unit) {
+private fun Screen(onDoneClicked: (String) -> Unit = {}) {
     Column {
         for (item in itemsState.value) {
             Item(item)
@@ -115,7 +115,7 @@ private fun Item(item: String) {
 @Preview(showBackground = true)
 fun ScreenPreview() {
     ToDoPomodoroTheme {
-        Screen { }
+        Screen()
     }
 }
 
