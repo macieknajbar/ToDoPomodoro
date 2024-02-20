@@ -36,6 +36,8 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 class MainActivity : ComponentActivity() {
 
+    private val presenter = MainPresenter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen()
+                    Screen(presenter)
                 }
             }
         }
@@ -56,13 +58,13 @@ class MainActivity : ComponentActivity() {
 val itemsState = mutableStateOf(listOf<String>())
 
 @Composable
-private fun Screen() {
+private fun Screen(mainPresenter: MainPresenter) {
     Column {
         for (item in itemsState.value) {
             Item(item)
         }
 
-        NewItemField(MainPresenter())
+        NewItemField(mainPresenter)
     }
 }
 
@@ -119,7 +121,7 @@ private fun Item(item: String) {
 @Preview(showBackground = true)
 fun ScreenPreview() {
     ToDoPomodoroTheme {
-        Screen()
+        Screen(MainPresenter())
     }
 }
 
