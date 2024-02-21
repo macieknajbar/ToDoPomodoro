@@ -15,6 +15,7 @@ class MainViewModel(
             itemsRepository.getAll()
                 .map {
                     ItemModel(
+                        id = it,
                         name = it
                     )
                 }
@@ -22,7 +23,15 @@ class MainViewModel(
 
     fun onDoneClicked(value: String) {
         itemsRepository.add(value)
-        items.update { itemsRepository.getAll().map(::ItemModel) }
+        items.update {
+            itemsRepository
+                .getAll().map {
+                    ItemModel(
+                        id = it,
+                        name = it
+                    )
+                }
+        }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
@@ -32,11 +41,12 @@ class MainViewModel(
 
             it.toMutableList()
                 .apply { removeAt(itemIdx) }
-                .apply { add(itemIdx, ItemModel(item.name, isChecked = isChecked)) }
+                .apply { add(itemIdx, ItemModel(item.id, item.name, isChecked = isChecked)) }
         }
     }
 
     class ItemModel(
+        val id: String,
         val name: String,
         val isChecked: Boolean = false,
     ) {
@@ -44,6 +54,7 @@ class MainViewModel(
 
         override fun equals(other: Any?): Boolean {
             return other is ItemModel
+                    && id == other.id
                     && name == other.name
                     && isChecked == other.isChecked
         }

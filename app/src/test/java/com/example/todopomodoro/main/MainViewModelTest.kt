@@ -15,8 +15,8 @@ internal class MainViewModelTest {
         val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
         val expected = listOf(
-            MainViewModel.ItemModel("item 1"),
-            MainViewModel.ItemModel("item 2"),
+            MainViewModel.ItemModel("item 1", "item 1"),
+            MainViewModel.ItemModel("item 2", "item 2"),
         )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -37,8 +37,8 @@ internal class MainViewModelTest {
         val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
         val expected = listOf(
-            MainViewModel.ItemModel("item 1"),
-            MainViewModel.ItemModel("item 2"),
+            MainViewModel.ItemModel("item 1", "item 1"),
+            MainViewModel.ItemModel("item 2", "item 2"),
         )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -58,8 +58,8 @@ internal class MainViewModelTest {
         val items = listOf("Item 1", "Item 2")
         val itemsRepository: Repository = mock()
         val expected = listOf(
-            MainViewModel.ItemModel(name = "Item 1", isChecked = false),
-            MainViewModel.ItemModel(name = "Item 2", isChecked = true)
+            MainViewModel.ItemModel(id = "Item 1", name = "Item 1", isChecked = false),
+            MainViewModel.ItemModel(id = "Item 2", name = "Item 2", isChecked = true)
         )
         
         `when`(itemsRepository.getAll()).thenReturn(items)
