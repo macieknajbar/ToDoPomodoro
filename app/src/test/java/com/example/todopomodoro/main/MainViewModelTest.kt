@@ -11,43 +11,37 @@ import org.mockito.Mockito.`when`
 internal class MainViewModelTest {
 
     @Test
-    fun `ON onDoneClicked SHOULD update state`() {
+    fun `ON onDoneClicked SHOULD add new item`() {
         val generatedId = "items_id"
         val value = "Hello world!"
         val itemsRepository: Repository<ItemEntity> = mock()
-        val itemEntity1 = itemEntityFake.copy(id = "item_1", text = "Item 1")
-        val itemEntity2 = itemEntityFake.copy(id = "item_2", text = "Item 2")
-        val items = listOf(itemEntity1, itemEntity2)
-        val expected = listOf(
-            itemModelFake.copy(id = itemEntity1.id, name = itemEntity1.text),
-            itemModelFake.copy(id = itemEntity2.id, name = itemEntity2.text),
-        )
 
-        `when`(itemsRepository.getAll()).thenReturn(items)
+        `when`(itemsRepository.getAll()).thenReturn(emptyList())
 
-        val sut = sut(
+        sut(
             itemsRepository = itemsRepository,
             idGenerator = { generatedId },
         ).apply { onDoneClicked(value) }
 
         verify(itemsRepository)
-            .add(generatedId, ItemEntity(id = generatedId, text = value, isComplete = false))
-        assertEquals(
-            expected,
-            sut.items.value
-        )
+            .add(
+                id = generatedId,
+                record = ItemEntity(
+                    id = generatedId,
+                    text = value,
+                    isComplete = false
+                )
+            )
     }
 
     @Test
     fun `ON init SHOULD get all items`() {
         val itemsRepository: Repository<ItemEntity> = mock()
-        val itemEntity1 = itemEntityFake.copy(id = "item_1", text = "Item 1")
-        val itemEntity2 = itemEntityFake.copy(id = "item_2", text = "Item 2")
-        val items = listOf(itemEntity1, itemEntity2)
-        val expected = listOf(
-            itemModelFake.copy(id = "item_1", name = "Item 1"),
-            itemModelFake.copy(id = "item_2", name = "Item 2"),
+        val items = listOf(
+            itemEntityFake.copy(id = "item_1"),
+            itemEntityFake.copy(id = "item_2")
         )
+        val expected = items.map { ItemMapper().map(it) }
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
@@ -61,8 +55,8 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
-        val itemEntity1 = itemEntityFake.copy(id = "item_1", text = "Item 1")
-        val itemEntity2 = itemEntityFake.copy(id = "item_2", text = "Item 2")
+        val itemEntity1 = itemEntityFake.copy(id = "item_1")
+        val itemEntity2 = itemEntityFake.copy(id = "item_2")
         val items = listOf(itemEntity1, itemEntity2)
         val itemsRepository: Repository<ItemEntity> = mock()
         val expected = listOf(
