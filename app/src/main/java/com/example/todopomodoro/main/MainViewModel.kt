@@ -45,18 +45,9 @@ class MainViewModel(
         }
     }
 
-    class ItemModel(
+    data class ItemModel(
         val id: String,
         val name: String,
         val isChecked: Boolean = false,
-    ) {
-        override fun hashCode(): Int = 0
-
-        override fun equals(other: Any?): Boolean {
-            return other is ItemModel
-                    && id == other.id
-                    && name == other.name
-                    && isChecked == other.isChecked
-        }
-    }
+    )
 }
