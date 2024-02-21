@@ -3,7 +3,6 @@ package com.example.todopomodoro.main
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.usecase.GetItems
-import com.example.todopomodoro.usecase.di.getItemsUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -30,7 +29,7 @@ internal class MainViewModelTest {
         ).apply { onDoneClicked(value) }
 
         verify(itemsRepository)
-            .add(
+            .update(
                 id = generatedId,
                 record = ItemEntity(
                     id = generatedId,
@@ -55,7 +54,7 @@ internal class MainViewModelTest {
         getItems = getItems
         ) .apply { onCheckChanged(itemEntity1.id, true) }
 
-        verify(itemsRepository).add(itemEntity1.id, itemEntity1.copy(isComplete = true))
+        verify(itemsRepository).update(itemEntity1.id, itemEntity1.copy(isComplete = true))
         verify(itemsRepository).getAll()
         verify(getItems, times(2)).exec()
     }

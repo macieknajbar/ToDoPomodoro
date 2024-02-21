@@ -20,7 +20,7 @@ class MainViewModel(
 
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()
-        itemsRepository.add(generatedId, ItemEntity(generatedId, value, false))
+        itemsRepository.update(generatedId, ItemEntity(generatedId, value, false))
 
         items.update { getItems.exec().map(itemMapper::map) }
     }
@@ -30,7 +30,7 @@ class MainViewModel(
             .getAll()
             .first { it.id == itemId }
             .copy(isComplete = isChecked)
-            .let { itemsRepository.add(it.id, it) }
+            .let { itemsRepository.update(it.id, it) }
 
         items.update { getItems.exec().map(itemMapper::map) }
     }
