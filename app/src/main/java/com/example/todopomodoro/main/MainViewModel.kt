@@ -26,7 +26,7 @@ class MainViewModel(
 
             it.toMutableList()
                 .apply { removeAt(itemIdx) }
-                .apply { add(itemIdx, item) }
+                .apply { add(item) }
         }
     }
 
