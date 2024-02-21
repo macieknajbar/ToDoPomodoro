@@ -32,9 +32,7 @@ class MainActivity : ComponentActivity() {
                     Screen(
                         items = viewModel.items.value,
                         onDoneClicked = viewModel::onDoneClicked,
-                        onCheckChanged = { itemId, isChecked ->
-                            viewModel.onCheckChanged(itemId, isChecked)
-                        },
+                        onCheckChanged = viewModel::onCheckChanged,
                     )
                 }
             }
