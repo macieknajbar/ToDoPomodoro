@@ -39,12 +39,12 @@ internal class MainViewModelTest {
     @Test
     fun `ON init SHOULD get all items`() {
         val itemsRepository: Repository<ItemEntity> = mock()
-        val itemEntity1 = ItemEntity("", "", false)
-        val itemEntity2 = ItemEntity("", "", false)
+        val itemEntity1 = itemEntityFake.copy(id = "item_1", text = "Item 1")
+        val itemEntity2 = itemEntityFake.copy(id = "item_2", text = "Item 2")
         val items = listOf(itemEntity1, itemEntity2)
         val expected = listOf(
-            itemModelFake.copy(id = "item 1", name = "item 1"),
-            itemModelFake.copy(id = "item 2", name = "item 2"),
+            itemModelFake.copy(id = "item_1", name = "Item 1"),
+            itemModelFake.copy(id = "item_2", name = "Item 2"),
         )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -61,22 +61,20 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
-        val itemId1 = "Item 1"
-        val itemId2 = "Item 2"
-        val itemEntity1 = ItemEntity("", "", false)
-        val itemEntity2 = ItemEntity("", "", false)
+        val itemEntity1 = itemEntityFake.copy(id = "item_1", text = "Item 1")
+        val itemEntity2 = itemEntityFake.copy(id = "item_2", text = "Item 2")
         val items = listOf(itemEntity1, itemEntity2)
         val itemsRepository: Repository<ItemEntity> = mock()
         val expected = listOf(
-            itemModelFake.copy(id = itemId2, name = itemId2, isChecked = false),
-            itemModelFake.copy(id = itemId1, name = itemId1, isChecked = true)
+            itemModelFake.copy(id = itemEntity2.id, name = itemEntity2.text, isChecked = false),
+            itemModelFake.copy(id = itemEntity1.id, name = itemEntity1.text, isChecked = true)
         )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
         val sut = MainViewModel(
             itemsRepository = itemsRepository,
-        ).apply { onCheckChanged(itemId1, true) }
+        ).apply { onCheckChanged(itemEntity1.id, true) }
 
         assertEquals(
             expected,

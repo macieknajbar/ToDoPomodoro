@@ -22,7 +22,7 @@ class MainViewModel(
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
         items.update {
-            val itemIdx = it.indexOfFirst { it.name == itemId }
+            val itemIdx = it.indexOfFirst { it.id == itemId }
             val item = it[itemIdx].copy(isChecked = isChecked)
 
             it.toMutableList()
