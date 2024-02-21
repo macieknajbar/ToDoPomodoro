@@ -10,7 +10,7 @@ import com.example.todopomodoro.utils.update
 class MainViewModel(
     private val itemsRepository: Repository<ItemEntity>,
     private val itemMapper: ItemMapper = ItemMapper(),
-    private val idGenerator: () -> String = { "items_id" }
+    private val idGenerator: () -> String,
 ) : ViewModel() {
 
     val items: MutableState<List<ItemModel>> =
