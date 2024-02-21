@@ -30,12 +30,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Screen(
-                        items = viewModel.items.value.map(MainViewModel.ItemModel::name),
+                        items = viewModel.items.value,
                         onDoneClicked = viewModel::onDoneClicked,
                         onCheckChanged = { itemId, isChecked ->
                             viewModel.onCheckChanged(itemId, isChecked)
                         },
-                        theItems = viewModel.items.value,
                     )
                 }
             }
@@ -45,13 +44,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Screen(
-    items: List<String> = emptyList(),
+    items: List<MainViewModel.ItemModel> = emptyList(),
     onDoneClicked: (String) -> Unit = {},
     onCheckChanged: (String, Boolean) -> Unit = { _, _ -> },
-    theItems: List<MainViewModel.ItemModel> = emptyList(),
 ) {
     Column {
-        for (item in theItems) {
+        for (item in items) {
             Item(
                 item = item.name,
                 onCheckChanged = { onCheckChanged(item.id, it) },
@@ -67,8 +65,7 @@ private fun Screen(
 private fun ScreenPreview() {
     ToDoPomodoroTheme {
         Screen(
-            items = listOf("Task 1", "Task 2"),
-            theItems = listOf(
+            items = listOf(
                 MainViewModel.ItemModel(id = "1", name = "Task 1", isChecked = false),
                 MainViewModel.ItemModel(id = "2", name = "Task 2", isChecked = false),
             )
