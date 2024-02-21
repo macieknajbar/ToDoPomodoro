@@ -7,7 +7,7 @@ import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.utils.update
 
 class MainViewModel(
-    private val itemsRepository: Repository,
+    private val itemsRepository: Repository<String>,
     private val itemMapper: ItemMapper = ItemMapper(),
 ) : ViewModel() {
 
@@ -16,7 +16,7 @@ class MainViewModel(
 
     fun onDoneClicked(value: String) {
         itemsRepository.add(value)
-        items.update { itemsRepository .getAll().map(itemMapper::map) }
+        items.update { itemsRepository.getAll().map(itemMapper::map) }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {

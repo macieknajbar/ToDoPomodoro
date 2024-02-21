@@ -12,7 +12,7 @@ internal class MainViewModelTest {
     @Test
     fun `ON onDoneClicked SHOULD update state`() {
         val value = "Hello world!"
-        val itemsRepository: Repository = mock()
+        val itemsRepository: Repository<String> = mock()
         val items = listOf("item 1", "item 2")
         val expected = listOf(
             itemModelFake.copy(id = "item 1", name = "item 1"),
@@ -34,7 +34,7 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON init SHOULD get all items`() {
-        val itemsRepository: Repository = mock()
+        val itemsRepository: Repository<String> = mock()
         val items = listOf("item 1", "item 2")
         val expected = listOf(
             itemModelFake.copy(id = "item 1", name = "item 1"),
@@ -58,7 +58,7 @@ internal class MainViewModelTest {
         val itemId1 = "Item 1"
         val itemId2 = "Item 2"
         val items = listOf(itemId1, itemId2)
-        val itemsRepository: Repository = mock()
+        val itemsRepository: Repository<String> = mock()
         val expected = listOf(
             itemModelFake.copy(id = itemId2, name = itemId2, isChecked = false),
             itemModelFake.copy(id = itemId1, name = itemId1, isChecked = true)

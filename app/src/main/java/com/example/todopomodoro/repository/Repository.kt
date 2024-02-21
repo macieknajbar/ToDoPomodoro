@@ -1,6 +1,6 @@
 package com.example.todopomodoro.repository
 
-interface Repository {
-    fun add(record: String)
-    fun getAll(): List<String>
+interface Repository<T> {
+    fun add(record: T)
+    fun getAll(): List<T>
 }
