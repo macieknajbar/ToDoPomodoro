@@ -29,7 +29,7 @@ internal class MainViewModelTest {
         ).apply { onDoneClicked(value) }
 
         verify(itemsRepository)
-            .add(ItemEntity(id = "items_id", text = value, isComplete = false))
+            .add("items_id", ItemEntity(id = "items_id", text = value, isComplete = false))
         assertEquals(
             expected,
             sut.items.value
