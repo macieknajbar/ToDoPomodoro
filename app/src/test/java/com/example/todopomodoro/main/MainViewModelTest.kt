@@ -52,4 +52,26 @@ internal class MainViewModelTest {
             sut.items.value
         )
     }
+
+    @Test
+    fun `ON onCheckChanged SHOULD mark the task as completed`() {
+        val items = listOf("Item 1", "Item 2")
+        val itemsRepository: Repository = mock()
+        val expected = listOf(
+            MainViewModel.ItemModel(name = "Item 1", isChecked = true),
+            MainViewModel.ItemModel(name = "Item 2", isChecked = false)
+        )
+        
+        `when`(itemsRepository.getAll()).thenReturn(items)
+
+        val sut = MainViewModel(
+            itemsRepository = itemsRepository,
+        )
+        sut.onCheckChanged(true)
+
+        assertEquals(
+            expected,
+            sut.items.value
+        )
+    }
 }
