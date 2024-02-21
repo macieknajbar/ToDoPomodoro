@@ -49,7 +49,7 @@ private fun Screen(
     Column {
         for (item in items) {
             Item(
-                item = item.name,
+                text = item.name,
                 isChecked = item.isChecked,
                 onCheckChanged = { onCheckChanged(item.id, it) },
             )
@@ -66,7 +66,7 @@ private fun ScreenPreview() {
         Screen(
             items = listOf(
                 MainViewModel.ItemModel(id = "1", name = "Task 1", isChecked = false),
-                MainViewModel.ItemModel(id = "2", name = "Task 2", isChecked = false),
+                MainViewModel.ItemModel(id = "2", name = "Task 2", isChecked = true),
             )
         )
     }

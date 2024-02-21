@@ -55,12 +55,13 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
-        val itemId = "Item 2"
-        val items = listOf("Item 1", itemId)
+        val itemId1 = "Item 1"
+        val itemId2 = "Item 2"
+        val items = listOf(itemId1, itemId2)
         val itemsRepository: Repository = mock()
         val expected = listOf(
-            itemModelFake.copy(id = "Item 1", name = "Item 1", isChecked = false),
-            itemModelFake.copy(id = itemId, name = itemId, isChecked = true)
+            itemModelFake.copy(id = itemId2, name = itemId2, isChecked = false),
+            itemModelFake.copy(id = itemId1, name = itemId1, isChecked = true)
         )
         
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -68,7 +69,7 @@ internal class MainViewModelTest {
         val sut = MainViewModel(
             itemsRepository = itemsRepository,
         )
-        sut.onCheckChanged(itemId, true)
+        sut.onCheckChanged(itemId1, true)
 
         assertEquals(
             expected,

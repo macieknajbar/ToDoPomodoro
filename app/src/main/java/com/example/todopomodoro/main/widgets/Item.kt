@@ -1,5 +1,6 @@
 package com.example.todopomodoro.main.widgets
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -9,10 +10,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,21 +19,19 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 @Composable
 fun Item(
-    item: String,
+    text: String,
     onCheckChanged: (Boolean) -> Unit = {},
     isChecked: Boolean = false,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        var checked by remember { mutableStateOf(false) }
         Checkbox(
             checked = isChecked,
             onCheckedChange = {
-                checked = it
                 onCheckChanged(it)
             }
         )
         Text(
-            text = item,
+            text = text,
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 8.dp),
@@ -58,6 +53,9 @@ fun Item(
 @Preview(showBackground = true)
 private fun ItemPreview() {
     ToDoPomodoroTheme {
-        Item("Text")
+        Column {
+            Item("Text", isChecked = true)
+            Item("Text", isChecked = false)
+        }
     }
 }
