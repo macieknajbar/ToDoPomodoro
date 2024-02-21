@@ -21,13 +21,17 @@ import androidx.compose.ui.unit.dp
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 @Composable
-fun Item(item: String) {
+fun Item(
+    item: String,
+    onCheckChanged: (Boolean) -> Unit = {},
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         var checked by remember { mutableStateOf(false) }
         Checkbox(
             checked = checked,
             onCheckedChange = {
                 checked = it
+                onCheckChanged(it)
             }
         )
         Text(
