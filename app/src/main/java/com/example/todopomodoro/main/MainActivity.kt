@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
                         onCheckChanged = { itemId, isChecked ->
                             viewModel.onCheckChanged(itemId, isChecked)
                         },
+                        theItems = viewModel.items.value,
                     )
                 }
             }
@@ -47,12 +48,13 @@ private fun Screen(
     items: List<String> = emptyList(),
     onDoneClicked: (String) -> Unit = {},
     onCheckChanged: (String, Boolean) -> Unit = { _, _ -> },
+    theItems: List<MainViewModel.ItemModel> = emptyList(),
 ) {
     Column {
-        for (item in items) {
+        for (item in theItems) {
             Item(
-                item = item,
-                onCheckChanged = { onCheckChanged(item, it) },
+                item = item.name,
+                onCheckChanged = { onCheckChanged(item.id, it) },
             )
         }
 
@@ -64,7 +66,13 @@ private fun Screen(
 @Preview(showBackground = true)
 private fun ScreenPreview() {
     ToDoPomodoroTheme {
-        Screen(listOf("Task 1", "Task 2"))
+        Screen(
+            items = listOf("Task 1", "Task 2"),
+            theItems = listOf(
+                MainViewModel.ItemModel(id = "1", name = "Task 1", isChecked = false),
+                MainViewModel.ItemModel(id = "2", name = "Task 2", isChecked = false),
+            )
+        )
     }
 }
 
