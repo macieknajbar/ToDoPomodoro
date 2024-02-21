@@ -1,17 +1,19 @@
 package com.example.todopomodoro.repository
 
-object ItemsRepository: Repository<String> {
-    private val items = mutableMapOf<String, String>()
+import com.example.todopomodoro.domain.ItemEntity
 
-    override fun add(record: String) {
+object ItemsRepository: Repository<ItemEntity> {
+    private val items = mutableMapOf<String, ItemEntity>()
+
+    override fun add(record: ItemEntity) {
         items["items_${items.size}"] = record
     }
 
-    override fun add(id: String, record: String) {
+    override fun add(id: String, record: ItemEntity) {
         items[id] = record
     }
 
-    override fun getAll(): List<String> {
+    override fun getAll(): List<ItemEntity> {
         return items.values.toList()
     }
 }

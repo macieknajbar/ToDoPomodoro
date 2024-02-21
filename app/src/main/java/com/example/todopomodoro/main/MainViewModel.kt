@@ -3,11 +3,12 @@ package com.example.todopomodoro.main
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.utils.update
 
 class MainViewModel(
-    private val itemsRepository: Repository<String>,
+    private val itemsRepository: Repository<ItemEntity>,
     private val itemMapper: ItemMapper = ItemMapper(),
 ) : ViewModel() {
 
@@ -15,7 +16,7 @@ class MainViewModel(
         mutableStateOf(itemsRepository.getAll().map(itemMapper::map))
 
     fun onDoneClicked(value: String) {
-        itemsRepository.add(value)
+        itemsRepository.add(ItemEntity("items_id", value, false))
         items.update { itemsRepository.getAll().map(itemMapper::map) }
     }
 
