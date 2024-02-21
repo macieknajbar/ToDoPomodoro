@@ -24,11 +24,12 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 fun Item(
     item: String,
     onCheckChanged: (Boolean) -> Unit = {},
+    isChecked: Boolean = false,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         var checked by remember { mutableStateOf(false) }
         Checkbox(
-            checked = checked,
+            checked = isChecked,
             onCheckedChange = {
                 checked = it
                 onCheckChanged(it)

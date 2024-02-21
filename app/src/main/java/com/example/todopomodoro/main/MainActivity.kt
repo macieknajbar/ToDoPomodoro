@@ -50,6 +50,7 @@ private fun Screen(
         for (item in items) {
             Item(
                 item = item.name,
+                isChecked = item.isChecked,
                 onCheckChanged = { onCheckChanged(item.id, it) },
             )
         }
