@@ -36,6 +36,10 @@ internal class MainViewModelTest {
     fun `ON init SHOULD get all items`() {
         val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
+        val expected = listOf(
+            MainViewModel.ItemModel("item 1"),
+            MainViewModel.ItemModel("item 2"),
+        )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
@@ -44,7 +48,7 @@ internal class MainViewModelTest {
         )
 
         assertEquals(
-            items,
+            expected,
             sut.items.value
         )
     }
