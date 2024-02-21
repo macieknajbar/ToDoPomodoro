@@ -20,4 +20,6 @@ class MainViewModel(
     fun onCheckChanged(isChecked: Boolean) {
 
     }
+
+    class ItemModel(val name: String)
 }

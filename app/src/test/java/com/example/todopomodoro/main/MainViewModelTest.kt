@@ -14,6 +14,10 @@ internal class MainViewModelTest {
         val value = "Hello world!"
         val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
+        val expected = listOf(
+            MainViewModel.ItemModel("item 1"),
+            MainViewModel.ItemModel("item 2"),
+        )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
@@ -23,7 +27,7 @@ internal class MainViewModelTest {
 
         verify(itemsRepository).add(value)
         assertEquals(
-            items,
+            expected,
             sut.items.value
         )
     }
