@@ -1,16 +1,17 @@
 package com.example.todopomodoro.repository
 
-import androidx.compose.runtime.mutableStateOf
-import com.example.todopomodoro.utils.update
-
 object ItemsRepository: Repository<String> {
-    private val itemsState = mutableStateOf(emptyList<String>())
+    private val items = mutableMapOf<String, String>()
 
     override fun add(record: String) {
-        itemsState.update { it + record }
+        items["items_${items.size}"] = record
+    }
+
+    override fun add(id: String, record: String) {
+        items[id] = record
     }
 
     override fun getAll(): List<String> {
-        return itemsState.value
+        return items.values.toList()
     }
 }
