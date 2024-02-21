@@ -26,7 +26,10 @@ class MainViewModel(
     }
 
     fun onCheckChanged(isChecked: Boolean) {
-
+        items.update {
+            val item = it.first()
+            listOf(ItemModel(item.name, isChecked = true)) + it.subList(1, it.size)
+        }
     }
 
     class ItemModel(
