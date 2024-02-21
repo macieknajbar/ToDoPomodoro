@@ -67,7 +67,7 @@ internal class MainViewModelTest {
         val sut = MainViewModel(
             itemsRepository = itemsRepository,
         )
-        sut.onCheckChanged(true)
+        sut.onCheckChanged(false)
 
         assertEquals(
             expected,
