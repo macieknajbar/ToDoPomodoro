@@ -14,7 +14,11 @@ class MainViewModel(
 ) : ViewModel() {
 
     val items: MutableState<List<ItemModel>> =
-        mutableStateOf(itemsRepository.getAll().map(itemMapper::map))
+        mutableStateOf(
+            itemsRepository.getAll()
+                .map(itemMapper::map)
+                .sortedBy { it.isChecked }
+        )
 
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()

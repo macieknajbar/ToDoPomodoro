@@ -75,6 +75,26 @@ internal class MainViewModelTest {
         )
     }
 
+    @Test
+    fun `ON onCheckChanged SHOULD sort the list active to complete`() {
+        val itemsRepository: Repository<ItemEntity> = mock()
+        val item1 = itemEntityFake.copy(id = "i1", isComplete = true)
+        val item2 = itemEntityFake.copy(id = "i2", isComplete = false)
+        val items = listOf(item1, item2)
+        val expected = items
+            .map { ItemMapper().map(it) }
+            .sortedBy { it.isChecked }
+
+        `when`(itemsRepository.getAll()).thenReturn(items)
+
+        val sut = sut(itemsRepository = itemsRepository)
+
+        assertEquals(
+            expected,
+            sut.items.value
+        )
+    }
+
     private fun sut(
         itemsRepository: Repository<ItemEntity> = mock(),
         idGenerator: () -> String = mock(),
