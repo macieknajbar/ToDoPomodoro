@@ -27,8 +27,12 @@ class MainViewModel(
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
         items.update {
-            val item = it.first { it.name == itemId }
-            listOf(ItemModel(item.name, isChecked = isChecked)) + it.subList(1, it.size)
+            val itemIdx = it.indexOfFirst { it.name == itemId }
+            val item = it[itemIdx]
+
+            it.toMutableList()
+                .apply { removeAt(itemIdx) }
+                .apply { add(itemIdx, ItemModel(item.name, isChecked = isChecked)) }
         }
     }
 
