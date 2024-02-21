@@ -5,26 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
+import com.example.todopomodoro.usecase.GetItems
 import com.example.todopomodoro.utils.update
 
 class MainViewModel(
     private val itemsRepository: Repository<ItemEntity>,
     private val itemMapper: ItemMapper = ItemMapper(),
     private val idGenerator: () -> String,
+    private val getItems: GetItems,
 ) : ViewModel() {
 
     val items: MutableState<List<ItemModel>> =
-        mutableStateOf(
-            itemsRepository.getAll()
-                .sortedBy { it.isComplete }
-                .map(itemMapper::map)
-        )
+        mutableStateOf(getItems.exec().map(itemMapper::map))
 
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()
         itemsRepository.add(generatedId, ItemEntity(generatedId, value, false))
 
-        items.update { itemsRepository.getAll().map(itemMapper::map) }
+        items.update { getItems.exec().map(itemMapper::map) }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
@@ -34,7 +32,7 @@ class MainViewModel(
             .copy(isComplete = isChecked)
             .let { itemsRepository.add(it.id, it) }
 
-        items.update { itemsRepository.getAll().map(itemMapper::map) }
+        items.update { getItems.exec().map(itemMapper::map) }
     }
 
     data class ItemModel(
