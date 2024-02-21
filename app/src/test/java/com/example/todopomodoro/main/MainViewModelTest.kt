@@ -15,8 +15,8 @@ internal class MainViewModelTest {
         val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
         val expected = listOf(
-            MainViewModel.ItemModel("item 1", "item 1"),
-            MainViewModel.ItemModel("item 2", "item 2"),
+            itemModelFake.copy(id = "item 1", name = "item 1"),
+            itemModelFake.copy(id = "item 2", name = "item 2"),
         )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -37,8 +37,8 @@ internal class MainViewModelTest {
         val itemsRepository: Repository = mock()
         val items = listOf("item 1", "item 2")
         val expected = listOf(
-            MainViewModel.ItemModel("item 1", "item 1"),
-            MainViewModel.ItemModel("item 2", "item 2"),
+            itemModelFake.copy(id = "item 1", name = "item 1"),
+            itemModelFake.copy(id = "item 2", name = "item 2"),
         )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -55,11 +55,12 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
-        val items = listOf("Item 1", "Item 2")
+        val itemId = "Item 2"
+        val items = listOf("Item 1", itemId)
         val itemsRepository: Repository = mock()
         val expected = listOf(
-            MainViewModel.ItemModel(id = "Item 1", name = "Item 1", isChecked = false),
-            MainViewModel.ItemModel(id = "Item 2", name = "Item 2", isChecked = true)
+            itemModelFake.copy(id = "Item 1", name = "Item 1", isChecked = false),
+            itemModelFake.copy(id = itemId, name = itemId, isChecked = true)
         )
         
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -67,11 +68,17 @@ internal class MainViewModelTest {
         val sut = MainViewModel(
             itemsRepository = itemsRepository,
         )
-        sut.onCheckChanged("Item 2", true)
+        sut.onCheckChanged(itemId, true)
 
         assertEquals(
             expected,
             sut.items.value
         )
     }
+
+    private val itemModelFake = MainViewModel.ItemModel(
+        id = "item_0",
+        name = "Item",
+        isChecked = false,
+    )
 }

@@ -16,7 +16,8 @@ class MainViewModel(
                 .map {
                     ItemModel(
                         id = it,
-                        name = it
+                        name = it,
+                        isChecked = false,
                     )
                 }
         )
@@ -28,7 +29,8 @@ class MainViewModel(
                 .getAll().map {
                     ItemModel(
                         id = it,
-                        name = it
+                        name = it,
+                        isChecked = false,
                     )
                 }
         }
@@ -37,17 +39,17 @@ class MainViewModel(
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
         items.update {
             val itemIdx = it.indexOfFirst { it.name == itemId }
-            val item = it[itemIdx]
+            val item = it[itemIdx].copy(isChecked = isChecked)
 
             it.toMutableList()
                 .apply { removeAt(itemIdx) }
-                .apply { add(itemIdx, ItemModel(item.id, item.name, isChecked = isChecked)) }
+                .apply { add(itemIdx, item) }
         }
     }
 
     data class ItemModel(
         val id: String,
         val name: String,
-        val isChecked: Boolean = false,
+        val isChecked: Boolean,
     )
 }
