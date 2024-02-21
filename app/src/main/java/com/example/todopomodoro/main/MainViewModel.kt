@@ -16,8 +16,8 @@ class MainViewModel(
     val items: MutableState<List<ItemModel>> =
         mutableStateOf(
             itemsRepository.getAll()
+                .sortedBy { it.isComplete }
                 .map(itemMapper::map)
-                .sortedBy { it.isChecked }
         )
 
     fun onDoneClicked(value: String) {

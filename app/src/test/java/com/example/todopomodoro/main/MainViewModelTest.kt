@@ -82,8 +82,8 @@ internal class MainViewModelTest {
         val item2 = itemEntityFake.copy(id = "i2", isComplete = false)
         val items = listOf(item1, item2)
         val expected = items
+            .sortedBy { it.isComplete }
             .map { ItemMapper().map(it) }
-            .sortedBy { it.isChecked }
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
