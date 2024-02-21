@@ -5,6 +5,7 @@ import com.example.todopomodoro.repository.Repository
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
@@ -56,23 +57,16 @@ internal class MainViewModelTest {
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
         val itemEntity1 = itemEntityFake.copy(id = "item_1")
-        val itemEntity2 = itemEntityFake.copy(id = "item_2")
-        val items = listOf(itemEntity1, itemEntity2)
+        val items = listOf(itemEntity1)
         val itemsRepository: Repository<ItemEntity> = mock()
-        val expected = listOf(
-            itemModelFake.copy(id = itemEntity2.id, name = itemEntity2.text, isChecked = false),
-            itemModelFake.copy(id = itemEntity1.id, name = itemEntity1.text, isChecked = true)
-        )
 
         `when`(itemsRepository.getAll()).thenReturn(items)
 
-        val sut = sut(itemsRepository = itemsRepository)
+        sut(itemsRepository = itemsRepository)
             .apply { onCheckChanged(itemEntity1.id, true) }
 
-        assertEquals(
-            expected,
-            sut.items.value
-        )
+        verify(itemsRepository).add(itemEntity1.id, itemEntity1.copy(isComplete = true))
+        verify(itemsRepository, times(3)).getAll()
     }
 
     @Test

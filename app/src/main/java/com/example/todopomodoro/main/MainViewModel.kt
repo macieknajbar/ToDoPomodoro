@@ -23,18 +23,18 @@ class MainViewModel(
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()
         itemsRepository.add(generatedId, ItemEntity(generatedId, value, false))
+
         items.update { itemsRepository.getAll().map(itemMapper::map) }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
-        items.update {
-            val itemIdx = it.indexOfFirst { it.id == itemId }
-            val item = it[itemIdx].copy(isChecked = isChecked)
+        itemsRepository
+            .getAll()
+            .first { it.id == itemId }
+            .copy(isComplete = isChecked)
+            .let { itemsRepository.add(it.id, it) }
 
-            it.toMutableList()
-                .apply { removeAt(itemIdx) }
-                .apply { add(item) }
-        }
+        items.update { itemsRepository.getAll().map(itemMapper::map) }
     }
 
     data class ItemModel(
