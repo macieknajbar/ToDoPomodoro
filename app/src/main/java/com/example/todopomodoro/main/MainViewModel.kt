@@ -8,32 +8,15 @@ import com.example.todopomodoro.utils.update
 
 class MainViewModel(
     private val itemsRepository: Repository,
+    private val itemMapper: ItemMapper = ItemMapper(),
 ) : ViewModel() {
 
     val items: MutableState<List<ItemModel>> =
-        mutableStateOf(
-            itemsRepository.getAll()
-                .map {
-                    ItemModel(
-                        id = it,
-                        name = it,
-                        isChecked = false,
-                    )
-                }
-        )
+        mutableStateOf(itemsRepository.getAll().map(itemMapper::map))
 
     fun onDoneClicked(value: String) {
         itemsRepository.add(value)
-        items.update {
-            itemsRepository
-                .getAll().map {
-                    ItemModel(
-                        id = it,
-                        name = it,
-                        isChecked = false,
-                    )
-                }
-        }
+        items.update { itemsRepository .getAll().map(itemMapper::map) }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
