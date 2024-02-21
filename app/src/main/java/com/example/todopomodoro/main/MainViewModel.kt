@@ -25,9 +25,9 @@ class MainViewModel(
         items.update { itemsRepository.getAll().map(::ItemModel) }
     }
 
-    fun onCheckChanged(isChecked: Boolean) {
+    fun onCheckChanged(itemId: String, isChecked: Boolean) {
         items.update {
-            val item = it.first()
+            val item = it.first { it.name == itemId }
             listOf(ItemModel(item.name, isChecked = isChecked)) + it.subList(1, it.size)
         }
     }

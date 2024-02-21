@@ -58,8 +58,8 @@ internal class MainViewModelTest {
         val items = listOf("Item 1", "Item 2")
         val itemsRepository: Repository = mock()
         val expected = listOf(
-            MainViewModel.ItemModel(name = "Item 1", isChecked = false),
-            MainViewModel.ItemModel(name = "Item 2", isChecked = true)
+            MainViewModel.ItemModel(name = "Item 1", isChecked = true),
+            MainViewModel.ItemModel(name = "Item 2", isChecked = false)
         )
         
         `when`(itemsRepository.getAll()).thenReturn(items)
@@ -67,7 +67,7 @@ internal class MainViewModelTest {
         val sut = MainViewModel(
             itemsRepository = itemsRepository,
         )
-        sut.onCheckChanged(true)
+        sut.onCheckChanged("Item 1", true)
 
         assertEquals(
             expected,
