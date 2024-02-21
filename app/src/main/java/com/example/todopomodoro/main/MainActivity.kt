@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Screen(
-                        items = viewModel.items.value,
+                        items = viewModel.items.value.map(MainViewModel.ItemModel::name),
                         onDoneClicked = viewModel::onDoneClicked,
                         onCheckChanged = { viewModel.onCheckChanged(it) },
                     )

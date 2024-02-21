@@ -10,11 +10,11 @@ class MainViewModel(
     private val itemsRepository: Repository,
 ): ViewModel() {
 
-    val items: MutableState<List<String>> = mutableStateOf(itemsRepository.getAll())
+    val items: MutableState<List<ItemModel>> = mutableStateOf(itemsRepository.getAll().map(::ItemModel))
 
     fun onDoneClicked(value: String) {
         itemsRepository.add(value)
-        items.update { itemsRepository.getAll() }
+        items.update { itemsRepository.getAll().map(::ItemModel) }
     }
 
     fun onCheckChanged(isChecked: Boolean) {
