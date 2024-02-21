@@ -8,9 +8,17 @@ import com.example.todopomodoro.utils.update
 
 class MainViewModel(
     private val itemsRepository: Repository,
-): ViewModel() {
+) : ViewModel() {
 
-    val items: MutableState<List<ItemModel>> = mutableStateOf(itemsRepository.getAll().map(::ItemModel))
+    val items: MutableState<List<ItemModel>> =
+        mutableStateOf(
+            itemsRepository.getAll()
+                .map {
+                    ItemModel(
+                        name = it
+                    )
+                }
+        )
 
     fun onDoneClicked(value: String) {
         itemsRepository.add(value)
@@ -21,5 +29,12 @@ class MainViewModel(
 
     }
 
-    class ItemModel(val name: String)
+    class ItemModel(val name: String) {
+        override fun hashCode(): Int = 0
+
+        override fun equals(other: Any?): Boolean {
+            return other is ItemModel
+                    && name == other.name
+        }
+    }
 }
