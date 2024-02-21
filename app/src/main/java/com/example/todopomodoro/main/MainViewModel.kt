@@ -16,7 +16,7 @@ class MainViewModel(
         mutableStateOf(itemsRepository.getAll().map(itemMapper::map))
 
     fun onDoneClicked(value: String) {
-        itemsRepository.add(ItemEntity("items_id", value, false))
+        itemsRepository.add("items_id", ItemEntity("items_id", value, false))
         items.update { itemsRepository.getAll().map(itemMapper::map) }
     }
 
