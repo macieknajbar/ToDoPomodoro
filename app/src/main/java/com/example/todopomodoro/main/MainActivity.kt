@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
                     Screen(
                         items = viewModel.items.value,
                         onDoneClicked = viewModel::onDoneClicked,
+                        onCheckChanged = { viewModel.onCheckChanged(it) },
                     )
                 }
             }
@@ -43,10 +44,14 @@ class MainActivity : ComponentActivity() {
 private fun Screen(
     items: List<String> = emptyList(),
     onDoneClicked: (String) -> Unit = {},
+    onCheckChanged: (Boolean) -> Unit = {},
 ) {
     Column {
         for (item in items) {
-            Item(item)
+            Item(
+                item = item,
+                onCheckChanged = onCheckChanged,
+            )
         }
 
         NewItemField(onDoneClicked)
@@ -57,7 +62,7 @@ private fun Screen(
 @Preview(showBackground = true)
 private fun ScreenPreview() {
     ToDoPomodoroTheme {
-        Screen(listOf("Task 1", "Task 2"))
+        Screen(listOf("Task 1", "Task 2"),)
     }
 }
 

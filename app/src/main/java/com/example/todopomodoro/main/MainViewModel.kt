@@ -16,4 +16,8 @@ class MainViewModel(
         itemsRepository.add(value)
         items.update { itemsRepository.getAll() }
     }
+
+    fun onCheckChanged(isChecked: Boolean) {
+
+    }
 }
