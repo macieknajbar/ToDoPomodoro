@@ -10,13 +10,13 @@ import com.example.todopomodoro.utils.update
 class MainViewModel(
     private val itemsRepository: Repository<ItemEntity>,
     private val itemMapper: ItemMapper = ItemMapper(),
+    private val idGenerator: () -> String = { "items_id" }
 ) : ViewModel() {
 
     val items: MutableState<List<ItemModel>> =
         mutableStateOf(itemsRepository.getAll().map(itemMapper::map))
 
     fun onDoneClicked(value: String) {
-        val idGenerator: () -> String = { "items_id" }
         val generatedId = idGenerator()
         itemsRepository.add(generatedId, ItemEntity(generatedId, value, false))
         items.update { itemsRepository.getAll().map(itemMapper::map) }
