@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +20,7 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun NewItemField(onDoneClicked: (String) -> Unit) {
-    var value by remember { mutableStateOf("Finish Android course") }
+    var value by remember { mutableStateOf("") }
     TextField(
         value = value,
         onValueChange = { value = it },
@@ -31,7 +32,8 @@ fun NewItemField(onDoneClicked: (String) -> Unit) {
             onDoneClicked(value)
             value = ""
         }),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text("Enter new item") }
     )
 }
 
