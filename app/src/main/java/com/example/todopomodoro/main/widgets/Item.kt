@@ -1,5 +1,6 @@
 package com.example.todopomodoro.main.widgets
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -12,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.todopomodoro.R
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
@@ -24,6 +27,9 @@ fun Item(
     text: String,
     onCheckChanged: (Boolean) -> Unit = {},
     isChecked: Boolean = false,
+    onDateClicked: () -> Unit = {},
+    dateText: String,
+    dateColor: Color,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
@@ -40,7 +46,12 @@ fun Item(
             softWrap = false,
             overflow = TextOverflow.Ellipsis,
         )
-        Text(text = stringResource(R.string.item_date_empty))
+        Text(
+            text = dateText,
+            color = dateColor,
+            fontSize = 12.sp,
+            modifier = Modifier.clickable(onClick = onDateClicked),
+        )
         Icon(
             imageVector = Icons.Sharp.PlayArrow,
             contentDescription = stringResource(R.string.item_icon_description),
@@ -56,8 +67,15 @@ fun Item(
 private fun ItemPreview() {
     ToDoPomodoroTheme {
         Column {
-            Item("Text", isChecked = true)
-            Item("Text", isChecked = false)
+            Item("Text", dateText = "01/01/99", dateColor = Color.Black)
+            Item(
+                "Text looooooooooooooooooooooooooooooooooooooong",
+                dateText = "01/01/99",
+                dateColor = Color.Black
+            )
+            Item("Checked", isChecked = true, dateText = "01/01/99", dateColor = Color.Black)
+            Item("With Date", dateText = "01/01/99", dateColor = Color.Black)
+            Item("Past due", dateText = "31/12/23", dateColor = Color.Red)
         }
     }
 }

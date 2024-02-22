@@ -9,7 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
 import com.example.todopomodoro.main.widgets.Item
 import com.example.todopomodoro.main.widgets.NewItemField
@@ -50,8 +53,11 @@ private fun Screen(
         for (item in items) {
             Item(
                 text = item.name,
-                isChecked = item.isChecked,
                 onCheckChanged = { onCheckChanged(item.id, it) },
+                isChecked = item.isChecked,
+                onDateClicked = { },
+                dateText = stringResource(R.string.item_date_empty),
+                dateColor = Color.Black,
             )
         }
 
