@@ -12,9 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todopomodoro.R
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
 @Composable
@@ -38,10 +40,10 @@ fun Item(
             softWrap = false,
             overflow = TextOverflow.Ellipsis,
         )
-        Text(text = "No Date")
+        Text(text = stringResource(R.string.item_date_empty))
         Icon(
             imageVector = Icons.Sharp.PlayArrow,
-            contentDescription = "run a timer",
+            contentDescription = stringResource(R.string.item_icon_description),
             modifier = Modifier
                 .size(48.dp)
                 .padding(8.dp)
