@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
@@ -22,7 +23,10 @@ fun NewItemField(onDoneClicked: (String) -> Unit) {
     TextField(
         value = value,
         onValueChange = { value = it },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.Sentences,
+        ),
         keyboardActions = KeyboardActions(onDone = {
             onDoneClicked(value)
             value = ""
