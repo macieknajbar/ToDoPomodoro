@@ -2,6 +2,7 @@ package com.example.todopomodoro.main
 
 import androidx.compose.ui.graphics.Color
 import com.example.todopomodoro.domain.ItemEntity
+import java.text.SimpleDateFormat
 
 class ItemMapper {
     fun map(input: ItemEntity): MainViewModel.ItemModel {
@@ -14,6 +15,7 @@ class ItemMapper {
                 "No Date"
             } else {
                 "01/01/01"
+                SimpleDateFormat("dd/MM/yy").format(input.dueDate)
             },
             dateColor = if (input.dueDate != null && input.dueDate >= 0 || input.dueDate == null) {
                 Color.Black
