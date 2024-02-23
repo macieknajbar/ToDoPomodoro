@@ -2,9 +2,9 @@ package com.example.todopomodoro.main
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
+import com.example.todopomodoro.main.model.ItemModel
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.usecase.GetItems
 import com.example.todopomodoro.utils.update
@@ -19,17 +19,24 @@ class MainViewModel(
         Calendar.getInstance()
             .apply { set(year, month, day) }
             .timeInMillis
-    }
+    },
 ) : ViewModel() {
+
+    val state: MutableState<State> = mutableStateOf(State())
 
     val items: MutableState<List<ItemModel>> =
         mutableStateOf(getItems.exec().map(itemMapper::map))
+
+    init {
+        state.update { copy(items = getItems.exec()) }
+    }
 
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()
         itemsRepository.update(generatedId, ItemEntity(generatedId, value, false, null))
 
         items.update { getItems.exec().map(itemMapper::map) }
+        state.update { copy(items = getItems.exec()) }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
@@ -40,6 +47,7 @@ class MainViewModel(
             .let { itemsRepository.update(it.id, it) }
 
         items.update { getItems.exec().map(itemMapper::map) }
+        state.update { copy(items = getItems.exec()) }
     }
 
     fun onDateClicked(itemId: String) {
@@ -69,6 +77,7 @@ class MainViewModel(
 
         itemsRepository.update(item.id, item.copy(dueDate = dueDate))
         items.update { getItems.exec().map(itemMapper::map) }
+        state.update { copy(items = getItems.exec()) }
     }
 
     fun onDateCancelClicked() {
@@ -80,14 +89,10 @@ class MainViewModel(
 
         itemsRepository.update(item.id, item.copy(dueDate = null))
         items.update { getItems.exec().map(itemMapper::map) }
+        state.update { copy(items = getItems.exec()) }
     }
 
-    data class ItemModel(
-        val id: String,
-        val name: String,
-        val isChecked: Boolean = false,
-        val shouldShowDatePicker: Boolean = false,
-        val dateText: String,
-        val dateColor: Color,
+    data class State(
+        val items: List<ItemEntity> = emptyList(),
     )
 }

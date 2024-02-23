@@ -2,6 +2,7 @@ package com.example.todopomodoro.main
 
 import androidx.compose.ui.graphics.Color
 import com.example.todopomodoro.domain.ItemEntity
+import com.example.todopomodoro.main.model.ItemModel
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -9,9 +10,9 @@ class ItemMapperTest {
 
     @Test
     fun `test map entity no date`() {
-        val expected = MainViewModel.ItemModel(
+        val expected = ItemModel(
             id = "item_id",
-            name = "Item text",
+            text = "Item text",
             isChecked = true,
             dateText = "No Date",
             dateColor = Color.Black
@@ -34,9 +35,9 @@ class ItemMapperTest {
 
     @Test
     fun `test map entity with date`() {
-        val expected = MainViewModel.ItemModel(
+        val expected = ItemModel(
             id = "item_id",
-            name = "Item text",
+            text = "Item text",
             isChecked = true,
             dateText = "01/01/01",
             dateColor = Color.Black
@@ -60,9 +61,9 @@ class ItemMapperTest {
 
     @Test
     fun `test map entity with date past due`() {
-        val expected = MainViewModel.ItemModel(
+        val expected = ItemModel(
             id = "item_id",
-            name = "Item text",
+            text = "Item text",
             isChecked = true,
             dateText = "01/01/01",
             dateColor = Color.Red

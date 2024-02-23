@@ -18,6 +18,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.isVisible
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
+import com.example.todopomodoro.main.model.ItemModel
 import com.example.todopomodoro.main.widgets.Item
 import com.example.todopomodoro.main.widgets.NewItemField
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Screen(
-    items: List<MainViewModel.ItemModel> = emptyList(),
+    items: List<ItemModel> = emptyList(),
     onDoneClicked: (String) -> Unit = {},
     onCheckChanged: (String, Boolean) -> Unit = { _, _ -> },
     onDateClicked: (String) -> Unit = {},
@@ -62,7 +63,7 @@ private fun Screen(
     Column {
         for (item in items) {
             Item(
-                text = item.name,
+                text = item.text,
                 onCheckChanged = { onCheckChanged(item.id, it) },
                 isChecked = item.isChecked,
                 onDateClicked = { onDateClicked(item.id) },
@@ -96,9 +97,9 @@ private fun Screen(
 @Composable
 @Preview(showBackground = true)
 private fun ScreenPreview() {
-    val item = MainViewModel.ItemModel(
+    val item = ItemModel(
         id = "1",
-        name = "Item 1",
+        text = "Item 1",
         dateText = "No Date",
         dateColor = Color.Black,
     )
@@ -107,19 +108,19 @@ private fun ScreenPreview() {
             items = listOf(
                 item.copy(
                     id = "1",
-                    name = "Item 1",
+                    text = "Item 1",
                     dateText = "No Date",
                     dateColor = Color.Black,
                 ),
                 item.copy(
                     id = "2",
-                    name = "Item 2",
+                    text = "Item 2",
                     dateText = "01/01/23",
                     dateColor = Color.Red,
                 ),
                 item.copy(
                     id = "3",
-                    name = "Item 3",
+                    text = "Item 3",
                     dateText = "01/01/30",
                     dateColor = Color.Black,
                 ),
