@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Screen(
-                        items = viewModel.items.value,
+                        viewState = viewModel.viewState.collectAsState(initial = MainViewModel.ViewState()).value,
                         onDoneClicked = viewModel::onDoneClicked,
                         onCheckChanged = viewModel::onCheckChanged,
                         onDateClicked = viewModel::onDateClicked,
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Screen(
-    items: List<ItemModel> = emptyList(),
+    viewState: MainViewModel.ViewState = MainViewModel.ViewState(),
     onDoneClicked: (String) -> Unit = {},
     onCheckChanged: (String, Boolean) -> Unit = { _, _ -> },
     onDateClicked: (String) -> Unit = {},
@@ -61,7 +62,7 @@ private fun Screen(
     onDateCancelClicked: () -> Unit = {},
 ) {
     Column {
-        for (item in items) {
+        for (item in viewState.items) {
             Item(
                 text = item.text,
                 onCheckChanged = { onCheckChanged(item.id, it) },
@@ -75,7 +76,7 @@ private fun Screen(
         NewItemField(onDoneClicked)
     }
 
-    if (items.any { it.shouldShowDatePicker }) {
+    if (viewState.shouldShowDatePicker) {
         val negativeButtonText = stringResource(id = R.string.datePicker_remove)
         AndroidView(
             factory = {
@@ -105,25 +106,27 @@ private fun ScreenPreview() {
     )
     ToDoPomodoroTheme {
         Screen(
-            items = listOf(
-                item.copy(
-                    id = "1",
-                    text = "Item 1",
-                    dateText = "No Date",
-                    dateColor = Color.Black,
-                ),
-                item.copy(
-                    id = "2",
-                    text = "Item 2",
-                    dateText = "01/01/23",
-                    dateColor = Color.Red,
-                ),
-                item.copy(
-                    id = "3",
-                    text = "Item 3",
-                    dateText = "01/01/30",
-                    dateColor = Color.Black,
-                ),
+            viewState = MainViewModel.ViewState(
+                listOf(
+                    item.copy(
+                        id = "1",
+                        text = "Item 1",
+                        dateText = "No Date",
+                        dateColor = Color.Black,
+                    ),
+                    item.copy(
+                        id = "2",
+                        text = "Item 2",
+                        dateText = "01/01/23",
+                        dateColor = Color.Red,
+                    ),
+                    item.copy(
+                        id = "3",
+                        text = "Item 3",
+                        dateText = "01/01/30",
+                        dateColor = Color.Black,
+                    ),
+                )
             )
         )
     }

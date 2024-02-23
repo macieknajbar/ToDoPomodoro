@@ -1,20 +1,19 @@
 package com.example.todopomodoro.main
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.model.ItemModel
 import com.example.todopomodoro.repository.Repository
-import com.example.todopomodoro.usecase.GetItems
-import com.example.todopomodoro.utils.update
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import java.util.Calendar
 
 class MainViewModel(
     private val itemsRepository: Repository<ItemEntity>,
     private val itemMapper: ItemMapper = ItemMapper(),
     private val idGenerator: () -> String,
-    private val getItems: GetItems,
     private val dateParser: (year: Int, month: Int, day: Int) -> Long = { year, month, day ->
         Calendar.getInstance()
             .apply { set(year, month, day) }
@@ -22,77 +21,78 @@ class MainViewModel(
     },
 ) : ViewModel() {
 
-    val state: MutableState<State> = mutableStateOf(State())
+    val state = MutableStateFlow(State())
 
-    val items: MutableState<List<ItemModel>> =
-        mutableStateOf(getItems.exec().map(itemMapper::map))
+    val viewState: Flow<ViewState> = state.map {
+        ViewState(
+            items = it.items
+                .sortedBy { it.isComplete }
+                .map(itemMapper::map),
+            shouldShowDatePicker = it.dateSelectionItemId != null,
+        )
+    }
 
     init {
-        state.update { copy(items = getItems.exec()) }
+        state.update { it.copy(items = itemsRepository.getAll()) }
     }
 
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()
         itemsRepository.update(generatedId, ItemEntity(generatedId, value, false, null))
 
-        items.update { getItems.exec().map(itemMapper::map) }
-        state.update { copy(items = getItems.exec()) }
+        state.update { it.copy(items = itemsRepository.getAll()) }
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
-        itemsRepository
-            .getAll()
+        state.value.items
             .first { it.id == itemId }
             .copy(isComplete = isChecked)
             .let { itemsRepository.update(it.id, it) }
 
-        items.update { getItems.exec().map(itemMapper::map) }
-        state.update { copy(items = getItems.exec()) }
+        state.update { it.copy(items = itemsRepository.getAll()) }
     }
 
     fun onDateClicked(itemId: String) {
-        val item = items.value
-            .first { it.id == itemId }
-
-        val updatedItem = item.copy(shouldShowDatePicker = true)
-
-        items.update {
-            toMutableList()
-                .apply {
-                    val idx = indexOf(item)
-                    removeAt(idx)
-                    add(idx, updatedItem)
-                }
-        }
+        state.update { it.copy(dateSelectionItemId = itemId) }
     }
 
     fun onDateSelected(year: Int, month: Int, day: Int) {
-        val itemId = items.value
-            .first { it.shouldShowDatePicker }
-            .id
-        val item = getItems.exec()
+        val itemId = state.value.dateSelectionItemId
+        val item = state.value.items
             .first { it.id == itemId }
 
         val dueDate = dateParser(year, month, day)
 
         itemsRepository.update(item.id, item.copy(dueDate = dueDate))
-        items.update { getItems.exec().map(itemMapper::map) }
-        state.update { copy(items = getItems.exec()) }
+        state.update {
+            it.copy(
+                items = itemsRepository.getAll(),
+                dateSelectionItemId = null,
+            )
+        }
     }
 
     fun onDateCancelClicked() {
-        val itemId = items.value
-            .first { it.shouldShowDatePicker }
-            .id
-        val item = getItems.exec()
+        val itemId = state.value.dateSelectionItemId
+        val item = state.value.items
             .first { it.id == itemId }
 
         itemsRepository.update(item.id, item.copy(dueDate = null))
-        items.update { getItems.exec().map(itemMapper::map) }
-        state.update { copy(items = getItems.exec()) }
+        state.update {
+            it.copy(
+                items = itemsRepository.getAll(),
+                dateSelectionItemId = null,
+            )
+        }
     }
 
     data class State(
         val items: List<ItemEntity> = emptyList(),
+        val dateSelectionItemId: String? = null,
+    )
+
+    data class ViewState(
+        val items: List<ItemModel> = emptyList(),
+        val shouldShowDatePicker: Boolean = false,
     )
 }
