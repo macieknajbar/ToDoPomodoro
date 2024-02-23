@@ -1,4 +1,4 @@
-package com.example.todopomodoro.main
+package com.example.todopomodoro.main.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
 import com.example.todopomodoro.main.model.ItemModel
+import com.example.todopomodoro.main.vm.MainViewModel
 import com.example.todopomodoro.main.widgets.Item
 import com.example.todopomodoro.main.widgets.NewItemField
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
@@ -68,7 +69,7 @@ private fun Screen(
                 onCheckChanged = { onCheckChanged(item.id, it) },
                 isChecked = item.isChecked,
                 onDateClicked = { onDateClicked(item.id) },
-                dateText = item.dateText, //stringResource(R.string.item_date_empty),
+                dateText = item.dateText,
                 dateColor = item.dateColor,
             )
         }

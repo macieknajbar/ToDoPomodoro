@@ -1,9 +1,9 @@
-package com.example.todopomodoro.main
+package com.example.todopomodoro.main.vm.mapper
 
 import androidx.compose.ui.graphics.Color
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.model.ItemModel
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Test
 
 class ItemMapperTest {
@@ -27,7 +27,7 @@ class ItemMapperTest {
             stringProvider = { "No Date" },
         ).map(input)
 
-        assertEquals(
+        Assert.assertEquals(
             expected,
             actual
         )
@@ -53,7 +53,7 @@ class ItemMapperTest {
             timestampProvider = { 0 },
         ).map(input)
 
-        assertEquals(
+        Assert.assertEquals(
             expected,
             actual
         )
@@ -79,7 +79,7 @@ class ItemMapperTest {
             timestampProvider = { 1 },
         ).map(input)
 
-        assertEquals(
+        Assert.assertEquals(
             expected,
             actual
         )

@@ -1,8 +1,9 @@
-package com.example.todopomodoro.main
+package com.example.todopomodoro.main.vm
 
 import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.model.ItemModel
+import com.example.todopomodoro.main.vm.mapper.ViewStateMapper
 import com.example.todopomodoro.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,7 @@ import java.util.Calendar
 
 class MainViewModel(
     private val itemsRepository: Repository<ItemEntity>,
-    private val itemMapper: ItemMapper = ItemMapper(),
+    private val viewStateMapper: ViewStateMapper = ViewStateMapper(),
     private val idGenerator: () -> String,
     private val dateParser: (year: Int, month: Int, day: Int) -> Long = { year, month, day ->
         Calendar.getInstance()
@@ -22,15 +23,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     val state = MutableStateFlow(State())
-
-    val viewState: Flow<ViewState> = state.map {
-        ViewState(
-            items = it.items
-                .sortedBy { it.isComplete }
-                .map(itemMapper::map),
-            shouldShowDatePicker = it.dateSelectionItemId != null,
-        )
-    }
+    val viewState: Flow<ViewState> = state.map(viewStateMapper::map)
 
     init {
         state.update { it.copy(items = itemsRepository.getAll()) }

@@ -1,4 +1,4 @@
-package com.example.todopomodoro.main
+package com.example.todopomodoro.main.vm.mapper
 
 import androidx.compose.ui.graphics.Color
 import com.example.todopomodoro.R
