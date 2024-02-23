@@ -48,7 +48,8 @@ class ItemMapperTest {
             dueDate = 0,
         )
         val actual = ItemMapper(
-            dateFormatter = { "01/01/01" }
+            dateFormatter = { "01/01/01" },
+            timestampProvider = { 0 },
         ).map(input)
 
         assertEquals(
@@ -70,10 +71,11 @@ class ItemMapperTest {
             id = "item_id",
             text = "Item text",
             isComplete = true,
-            dueDate = -1,
+            dueDate = 0,
         )
         val actual = ItemMapper(
-            dateFormatter = { "01/01/01" }
+            dateFormatter = { "01/01/01" },
+            timestampProvider = { 1 },
         ).map(input)
 
         assertEquals(
