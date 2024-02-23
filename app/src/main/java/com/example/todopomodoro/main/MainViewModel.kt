@@ -52,7 +52,13 @@ class MainViewModel(
     }
 
     fun onDateSelected(year: Int, month: Int, day: Int) {
+        val itemId = items.value
+            .first { it.shouldShowDatePicker }
+            .id
+        val item = getItems.exec()
+            .first { it.id == itemId }
 
+        itemsRepository.update(item.id, item.copy(dueDate = 987))
     }
 
     data class ItemModel(

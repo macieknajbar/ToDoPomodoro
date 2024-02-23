@@ -110,11 +110,19 @@ internal class MainViewModelTest {
     @Test
     fun `ON onDateSelected SHOULD set date on specified item`() {
         val itemsRepository: Repository<ItemEntity> = mock()
+        val getItems: GetItems = mock()
         val item = Fakes.item
-        val updatedItem = Fakes.item.copy(dueDate = 987)
+        val updatedItem = item.copy(dueDate = 987)
 
-        sut(itemsRepository = itemsRepository)
-            .onDateSelected(1, 2, 3)
+        `when`(getItems.exec()).thenReturn(listOf(item))
+
+        sut(
+            itemsRepository = itemsRepository,
+            getItems = getItems
+        ).apply {
+            onDateClicked(item.id)
+            onDateSelected(1, 2, 3)
+        }
 
         verify(itemsRepository).update(item.id, updatedItem)
     }
