@@ -4,8 +4,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class SimpleDateFormatter : DateFormatter {
+class SimpleDateFormatter(
+    pattern: String,
+) : DateFormatter {
+    private val simpleDateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+
     override fun format(timeInMillis: Long): String {
-        return SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(Date(timeInMillis))
+        return simpleDateFormat.format(Date(timeInMillis))
     }
 }
