@@ -35,9 +35,30 @@ class MainViewModel(
         items.update { getItems.exec().map(itemMapper::map) }
     }
 
+    fun onDateClicked(itemId: String) {
+        val item = items.value
+            .first { it.id == itemId }
+
+        val updatedItem = item.copy(shouldShowDatePicker = true)
+
+        items.update {
+            toMutableList()
+                .apply {
+                    val idx = indexOf(item)
+                    removeAt(idx)
+                    add(idx, updatedItem)
+                }
+        }
+    }
+
+    fun onDateSelected(year: Int, month: Int, day: Int) {
+
+    }
+
     data class ItemModel(
         val id: String,
         val name: String,
-        val isChecked: Boolean,
+        val isChecked: Boolean = false,
+        val shouldShowDatePicker: Boolean = false,
     )
 }

@@ -1,6 +1,10 @@
 package com.example.todopomodoro.main
 
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
+import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -12,12 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.isVisible
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
 import com.example.todopomodoro.main.widgets.Item
 import com.example.todopomodoro.main.widgets.NewItemField
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 import com.example.todopomodoro.utils.viewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -36,6 +45,8 @@ class MainActivity : ComponentActivity() {
                         items = viewModel.items.value,
                         onDoneClicked = viewModel::onDoneClicked,
                         onCheckChanged = viewModel::onCheckChanged,
+                        onDateClicked = viewModel::onDateClicked,
+                        onDateSelected = viewModel::onDateSelected,
                     )
                 }
             }
@@ -48,6 +59,8 @@ private fun Screen(
     items: List<MainViewModel.ItemModel> = emptyList(),
     onDoneClicked: (String) -> Unit = {},
     onCheckChanged: (String, Boolean) -> Unit = { _, _ -> },
+    onDateClicked: (String) -> Unit = {},
+    onDateSelected: (Int, Int, Int) -> Unit = { _, _, _ -> },
 ) {
     Column {
         for (item in items) {
@@ -55,13 +68,27 @@ private fun Screen(
                 text = item.name,
                 onCheckChanged = { onCheckChanged(item.id, it) },
                 isChecked = item.isChecked,
-                onDateClicked = { },
+                onDateClicked = { onDateClicked(item.id) },
                 dateText = stringResource(R.string.item_date_empty),
                 dateColor = Color.Black,
             )
         }
 
         NewItemField(onDoneClicked)
+    }
+
+    if (items.any { it.shouldShowDatePicker }) {
+        AndroidView(
+            factory = {
+                DatePickerDialog(it).apply {
+                    setOnDateSetListener { _, year, month, dayOfMonth ->
+                        onDateSelected(year, month, dayOfMonth)
+                    }
+                }.show()
+
+                View(it).apply { isVisible = false }
+            },
+        )
     }
 }
 

@@ -50,9 +50,10 @@ internal class MainViewModelTest {
         `when`(itemsRepository.getAll()).thenReturn(items)
         `when`(getItems.exec()).thenReturn(items)
 
-        sut(itemsRepository = itemsRepository,
-        getItems = getItems
-        ) .apply { onCheckChanged(itemEntity1.id, true) }
+        sut(
+            itemsRepository = itemsRepository,
+            getItems = getItems
+        ).apply { onCheckChanged(itemEntity1.id, true) }
 
         verify(itemsRepository).update(itemEntity1.id, itemEntity1.copy(isComplete = true))
         verify(itemsRepository).getAll()
@@ -77,6 +78,28 @@ internal class MainViewModelTest {
         )
 
         verify(getItems).exec()
+        assertEquals(
+            expected,
+            sut.items.value
+        )
+    }
+
+    @Test
+    fun `ON onDateClicked SHOULD show date picker for specified item`() {
+        val getItems: GetItems = mock()
+        val items = listOf(itemEntityFake.copy(id = "i1"), itemEntityFake.copy(id = "i2"))
+        val expected = items.map { ItemMapper().map(it) }
+            .toMutableList()
+            .apply {
+                add(1, first().copy(shouldShowDatePicker = true))
+                removeAt(0)
+            }
+
+        `when`(getItems.exec()).thenReturn(items)
+
+        val sut = sut(getItems = getItems)
+            .apply { onDateClicked(items.first().id) }
+
         assertEquals(
             expected,
             sut.items.value

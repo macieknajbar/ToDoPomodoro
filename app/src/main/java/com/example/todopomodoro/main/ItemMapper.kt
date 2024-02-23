@@ -8,6 +8,7 @@ class ItemMapper {
             id = input,
             name = input,
             isChecked = false,
+            shouldShowDatePicker = false,
         )
     }
     fun map(input: ItemEntity): MainViewModel.ItemModel {
@@ -15,6 +16,7 @@ class ItemMapper {
             id = input.id,
             name = input.text,
             isChecked = input.isComplete,
+            shouldShowDatePicker = false,
         )
     }
 }
