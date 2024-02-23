@@ -7,6 +7,8 @@ import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.usecase.GetItems
 import com.example.todopomodoro.utils.update
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class MainViewModel(
     private val itemsRepository: Repository<ItemEntity>,
@@ -58,7 +60,16 @@ class MainViewModel(
         val item = getItems.exec()
             .first { it.id == itemId }
 
-        itemsRepository.update(item.id, item.copy(dueDate = 987))
+        val dueDate = dateParser(year, month, day)
+
+        itemsRepository.update(item.id, item.copy(dueDate = dueDate))
+    }
+
+    private val dateParser: (year: Int, month: Int, day: Int) -> Long = { year, month, day ->
+        Calendar.getInstance()
+            .apply { set(year, month, day) }
+            .timeInMillis
+        987
     }
 
     data class ItemModel(
