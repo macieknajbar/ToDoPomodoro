@@ -106,6 +106,18 @@ internal class MainViewModelTest {
         )
     }
 
+    @Test
+    fun `ON onDateSelected SHOULD set date on specified item`() {
+        val itemsRepository: Repository<ItemEntity> = mock()
+        val item = itemEntityFake
+        val updatedItem = itemEntityFake.copy(dueDate = 987)
+
+        sut(itemsRepository = itemsRepository)
+            .onDateSelected(1, 2, 3)
+
+        verify(itemsRepository).update(item.id, updatedItem)
+    }
+
     private fun sut(
         itemsRepository: Repository<ItemEntity> = mock(),
         idGenerator: () -> String = mock(),
