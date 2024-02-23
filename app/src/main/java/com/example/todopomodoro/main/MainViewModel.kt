@@ -71,6 +71,10 @@ class MainViewModel(
         items.update { getItems.exec().map(itemMapper::map) }
     }
 
+    fun onDateCancelClicked() {
+
+    }
+
     data class ItemModel(
         val id: String,
         val name: String,

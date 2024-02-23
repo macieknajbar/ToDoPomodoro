@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
                         onCheckChanged = viewModel::onCheckChanged,
                         onDateClicked = viewModel::onDateClicked,
                         onDateSelected = viewModel::onDateSelected,
+                        onDateCancelClicked = viewModel::onDateCancelClicked,
                     )
                 }
             }
@@ -54,6 +55,7 @@ private fun Screen(
     onCheckChanged: (String, Boolean) -> Unit = { _, _ -> },
     onDateClicked: (String) -> Unit = {},
     onDateSelected: (Int, Int, Int) -> Unit = { _, _, _ -> },
+    onDateCancelClicked: () -> Unit = {},
 ) {
     Column {
         for (item in items) {
@@ -74,6 +76,7 @@ private fun Screen(
         AndroidView(
             factory = {
                 DatePickerDialog(it).apply {
+                    setOnCancelListener { onDateCancelClicked() }
                     setOnDateSetListener { _, year, month, dayOfMonth ->
                         onDateSelected(year, month, dayOfMonth)
                     }
