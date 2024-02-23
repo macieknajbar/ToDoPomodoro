@@ -25,15 +25,20 @@ class MainViewModel(
     val state = MutableStateFlow(State())
     val viewState: Flow<ViewState> = state.map(viewStateMapper::map)
 
+    private val itemsRepositoryObserver: (List<ItemEntity>) -> Unit =
+        { items -> state.update { it.copy(items = items) } }
+
     init {
-        state.update { it.copy(items = itemsRepository.getAll()) }
+        itemsRepository.addObserver(itemsRepositoryObserver)
+    }
+
+    override fun onCleared() {
+        itemsRepository.removeObserver(itemsRepositoryObserver)
     }
 
     fun onDoneClicked(value: String) {
-        val generatedId = idGenerator()
-        itemsRepository.update(generatedId, ItemEntity(generatedId, value, false, null))
-
-        state.update { it.copy(items = itemsRepository.getAll()) }
+        val record = ItemEntity(id = idGenerator(), text = value)
+        itemsRepository.update(record.id, record)
     }
 
     fun onCheckChanged(itemId: String, isChecked: Boolean) {
@@ -41,8 +46,6 @@ class MainViewModel(
             .first { it.id == itemId }
             .copy(isComplete = isChecked)
             .let { itemsRepository.update(it.id, it) }
-
-        state.update { it.copy(items = itemsRepository.getAll()) }
     }
 
     fun onDateClicked(itemId: String) {
@@ -50,19 +53,12 @@ class MainViewModel(
     }
 
     fun onDateSelected(year: Int, month: Int, day: Int) {
-        val itemId = state.value.dateSelectionItemId
-        val item = state.value.items
-            .first { it.id == itemId }
-
         val dueDate = dateParser(year, month, day)
+        val item = state.value
+            .run { items.first { it.id == dateSelectionItemId } }
 
         itemsRepository.update(item.id, item.copy(dueDate = dueDate))
-        state.update {
-            it.copy(
-                items = itemsRepository.getAll(),
-                dateSelectionItemId = null,
-            )
-        }
+        state.update { it.copy(dateSelectionItemId = null) }
     }
 
     fun onDateCancelClicked() {
@@ -71,12 +67,7 @@ class MainViewModel(
             .first { it.id == itemId }
 
         itemsRepository.update(item.id, item.copy(dueDate = null))
-        state.update {
-            it.copy(
-                items = itemsRepository.getAll(),
-                dateSelectionItemId = null,
-            )
-        }
+        state.update { it.copy(dateSelectionItemId = null) }
     }
 
     data class State(
