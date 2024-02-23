@@ -23,7 +23,7 @@ class ItemMapperTest {
             dueDate = null,
         )
         val actual = ItemMapper(
-            dateFormatter = { "No Date" },
+            stringProvider = { "No Date" },
         ).map(input)
 
         assertEquals(

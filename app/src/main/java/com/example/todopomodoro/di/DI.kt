@@ -14,3 +14,5 @@ fun todayTimestampProvider(): TimestampProvider = todayTimestampProvider
 
 fun dateFormatter(pattern: String): DateFormatter = SimpleDateFormatter(pattern)
 
+fun stringProvider(): (Int) -> String = { "" }
+
