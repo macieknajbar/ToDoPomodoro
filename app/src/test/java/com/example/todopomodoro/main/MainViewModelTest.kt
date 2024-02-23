@@ -132,6 +132,26 @@ internal class MainViewModelTest {
         verify(itemsRepository).update(item.id, updatedItem)
     }
 
+    @Test
+    fun `ON onDateCancelClicked SHOULD remove due date`() {
+        val itemsRepository: Repository<ItemEntity> = mock()
+        val getItems: GetItems = mock()
+        val item = Fakes.item.copy(dueDate = 987)
+        val updatedItem = item.copy(dueDate = null)
+
+        `when`(getItems.exec()).thenReturn(listOf(item))
+
+        sut(
+            itemsRepository = itemsRepository,
+            getItems = getItems,
+        ).apply {
+            onDateClicked(item.id)
+            onDateCancelClicked()
+        }
+
+        verify(itemsRepository).update(item.id, updatedItem)
+    }
+
     private fun sut(
         itemsRepository: Repository<ItemEntity> = mock(),
         idGenerator: () -> String = mock(),

@@ -2,4 +2,6 @@
     <string name="app_name">ToDoPomodoro</string>
     <string name="item_icon_description">run a timer</string>
     <string name="item_date_empty">No Date</string>
+
+    <string name="datePicker_remove">Remove</string>
 </resources>

@@ -12,9 +12,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.isVisible
+import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
 import com.example.todopomodoro.main.widgets.Item
 import com.example.todopomodoro.main.widgets.NewItemField
@@ -73,10 +75,13 @@ private fun Screen(
     }
 
     if (items.any { it.shouldShowDatePicker }) {
+        val negativeButtonText = stringResource(id = R.string.datePicker_remove)
         AndroidView(
             factory = {
                 DatePickerDialog(it).apply {
-                    setOnCancelListener { onDateCancelClicked() }
+                    setButton(DatePickerDialog.BUTTON_NEGATIVE, negativeButtonText) { _, _ ->
+                        onDateCancelClicked()
+                    }
                     setOnDateSetListener { _, year, month, dayOfMonth ->
                         onDateSelected(year, month, dayOfMonth)
                     }

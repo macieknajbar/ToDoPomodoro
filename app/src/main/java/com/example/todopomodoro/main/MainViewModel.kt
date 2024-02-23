@@ -72,7 +72,14 @@ class MainViewModel(
     }
 
     fun onDateCancelClicked() {
+        val itemId = items.value
+            .first { it.shouldShowDatePicker }
+            .id
+        val item = getItems.exec()
+            .first { it.id == itemId }
 
+        itemsRepository.update(item.id, item.copy(dueDate = null))
+        items.update { getItems.exec().map(itemMapper::map) }
     }
 
     data class ItemModel(
