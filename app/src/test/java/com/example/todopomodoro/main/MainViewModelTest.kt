@@ -68,7 +68,8 @@ internal class MainViewModelTest {
         val item1 = Fakes.item.copy(id = "i1", isComplete = true)
         val item2 = Fakes.item.copy(id = "i2", isComplete = false)
         val items = listOf(item1, item2)
-        val expected = items.map { ItemMapper().map(it) }
+        val itemMapper = ItemMapper(dateFormatter = { "" })
+        val expected = items.map { itemMapper.map(it) }
 
         `when`(itemsRepository.getAll()).thenReturn(items)
         `when`(getItems.exec()).thenReturn(items)
@@ -89,7 +90,8 @@ internal class MainViewModelTest {
     fun `ON onDateClicked SHOULD show date picker for specified item`() {
         val getItems: GetItems = mock()
         val items = listOf(Fakes.item.copy(id = "i1"), Fakes.item.copy(id = "i2"))
-        val expected = items.map { ItemMapper().map(it) }
+        val itemMapper = ItemMapper(dateFormatter = { "" })
+        val expected = items.map { itemMapper.map(it) }
             .toMutableList()
             .apply {
                 add(1, first().copy(shouldShowDatePicker = true))
@@ -98,8 +100,10 @@ internal class MainViewModelTest {
 
         `when`(getItems.exec()).thenReturn(items)
 
-        val sut = sut(getItems = getItems)
-            .apply { onDateClicked(items.first().id) }
+        val sut = sut(
+            getItems = getItems,
+            itemMapper = itemMapper,
+        ).apply { onDateClicked(items.first().id) }
 
         assertEquals(
             expected,
@@ -133,10 +137,12 @@ internal class MainViewModelTest {
         idGenerator: () -> String = mock(),
         getItems: GetItems = mock(),
         dateParser: (year: Int, month: Int, day: Int) -> Long = mock(),
+        itemMapper: ItemMapper = ItemMapper(dateFormatter = { "" }),
     ) = MainViewModel(
         itemsRepository = itemsRepository,
         idGenerator = idGenerator,
         getItems = getItems,
         dateParser = dateParser,
+        itemMapper = itemMapper,
     )
 }

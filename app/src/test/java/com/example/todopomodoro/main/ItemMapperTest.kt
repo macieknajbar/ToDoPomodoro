@@ -22,7 +22,9 @@ class ItemMapperTest {
             isComplete = true,
             dueDate = null,
         )
-        val actual = ItemMapper().map(input)
+        val actual = ItemMapper(
+            dateFormatter = { "No Date" },
+        ).map(input)
 
         assertEquals(
             expected,
@@ -45,7 +47,9 @@ class ItemMapperTest {
             isComplete = true,
             dueDate = 0,
         )
-        val actual = ItemMapper().map(input)
+        val actual = ItemMapper(
+            dateFormatter = { "01/01/01" }
+        ).map(input)
 
         assertEquals(
             expected,
@@ -68,7 +72,9 @@ class ItemMapperTest {
             isComplete = true,
             dueDate = -1,
         )
-        val actual = ItemMapper().map(input)
+        val actual = ItemMapper(
+            dateFormatter = { "01/01/01" }
+        ).map(input)
 
         assertEquals(
             expected,
