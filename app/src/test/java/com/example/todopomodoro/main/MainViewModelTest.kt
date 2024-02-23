@@ -1,5 +1,6 @@
 package com.example.todopomodoro.main
 
+import com.example.todopomodoro.Fakes.Fakes
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.usecase.GetItems
@@ -31,7 +32,7 @@ internal class MainViewModelTest {
         verify(itemsRepository)
             .update(
                 id = generatedId,
-                record = itemEntityFake.copy(
+                record = Fakes.item.copy(
                     id = generatedId,
                     text = value,
                     isComplete = false
@@ -42,7 +43,7 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
-        val itemEntity1 = itemEntityFake.copy(id = "item_1")
+        val itemEntity1 = Fakes.item.copy(id = "item_1")
         val items = listOf(itemEntity1)
         val itemsRepository: Repository<ItemEntity> = mock()
         val getItems: GetItems = mock()
@@ -64,8 +65,8 @@ internal class MainViewModelTest {
     fun `ON init SHOULD sort the list active to complete`() {
         val itemsRepository: Repository<ItemEntity> = mock()
         val getItems: GetItems = mock()
-        val item1 = itemEntityFake.copy(id = "i1", isComplete = true)
-        val item2 = itemEntityFake.copy(id = "i2", isComplete = false)
+        val item1 = Fakes.item.copy(id = "i1", isComplete = true)
+        val item2 = Fakes.item.copy(id = "i2", isComplete = false)
         val items = listOf(item1, item2)
         val expected = items.map { ItemMapper().map(it) }
 
@@ -87,7 +88,7 @@ internal class MainViewModelTest {
     @Test
     fun `ON onDateClicked SHOULD show date picker for specified item`() {
         val getItems: GetItems = mock()
-        val items = listOf(itemEntityFake.copy(id = "i1"), itemEntityFake.copy(id = "i2"))
+        val items = listOf(Fakes.item.copy(id = "i1"), Fakes.item.copy(id = "i2"))
         val expected = items.map { ItemMapper().map(it) }
             .toMutableList()
             .apply {
@@ -109,8 +110,8 @@ internal class MainViewModelTest {
     @Test
     fun `ON onDateSelected SHOULD set date on specified item`() {
         val itemsRepository: Repository<ItemEntity> = mock()
-        val item = itemEntityFake
-        val updatedItem = itemEntityFake.copy(dueDate = 987)
+        val item = Fakes.item
+        val updatedItem = Fakes.item.copy(dueDate = 987)
 
         sut(itemsRepository = itemsRepository)
             .onDateSelected(1, 2, 3)
@@ -126,12 +127,5 @@ internal class MainViewModelTest {
         itemsRepository = itemsRepository,
         idGenerator = idGenerator,
         getItems = getItems,
-    )
-
-    private val itemEntityFake = ItemEntity(
-        id = "item_id",
-        text = "Item",
-        isComplete = false,
-        dueDate = null,
     )
 }
