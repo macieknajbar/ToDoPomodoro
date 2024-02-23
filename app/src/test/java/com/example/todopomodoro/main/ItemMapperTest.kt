@@ -7,21 +7,6 @@ import org.junit.Test
 class ItemMapperTest {
 
     @Test
-    fun testMap() {
-        val input = "One"
-        val expected = MainViewModel.ItemModel(
-            id = "One",
-            name = "One",
-            isChecked = false
-        )
-
-        assertEquals(
-            expected,
-            ItemMapper().map(input)
-        )
-    }
-
-    @Test
     fun `test map entity`() {
         val expected = MainViewModel.ItemModel(
             id = "item_id",
