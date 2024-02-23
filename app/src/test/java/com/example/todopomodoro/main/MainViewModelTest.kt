@@ -53,7 +53,7 @@ internal class MainViewModelTest {
 
         sut(
             itemsRepository = itemsRepository,
-            getItems = getItems
+            getItems = getItems,
         ).apply { onCheckChanged(itemEntity1.id, true) }
 
         verify(itemsRepository).update(itemEntity1.id, itemEntity1.copy(isComplete = true))
@@ -118,7 +118,8 @@ internal class MainViewModelTest {
 
         sut(
             itemsRepository = itemsRepository,
-            getItems = getItems
+            getItems = getItems,
+            dateParser = { _, _, _ -> 987L },
         ).apply {
             onDateClicked(item.id)
             onDateSelected(1, 2, 3)
@@ -131,9 +132,11 @@ internal class MainViewModelTest {
         itemsRepository: Repository<ItemEntity> = mock(),
         idGenerator: () -> String = mock(),
         getItems: GetItems = mock(),
+        dateParser: (year: Int, month: Int, day: Int) -> Long = mock(),
     ) = MainViewModel(
         itemsRepository = itemsRepository,
         idGenerator = idGenerator,
         getItems = getItems,
+        dateParser = dateParser,
     )
 }

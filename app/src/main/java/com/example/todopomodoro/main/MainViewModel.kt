@@ -15,6 +15,11 @@ class MainViewModel(
     private val itemMapper: ItemMapper = ItemMapper(),
     private val idGenerator: () -> String,
     private val getItems: GetItems,
+    private val dateParser: (year: Int, month: Int, day: Int) -> Long = { year, month, day ->
+        Calendar.getInstance()
+            .apply { set(year, month, day) }
+            .timeInMillis
+    }
 ) : ViewModel() {
 
     val items: MutableState<List<ItemModel>> =
@@ -63,13 +68,6 @@ class MainViewModel(
         val dueDate = dateParser(year, month, day)
 
         itemsRepository.update(item.id, item.copy(dueDate = dueDate))
-    }
-
-    private val dateParser: (year: Int, month: Int, day: Int) -> Long = { year, month, day ->
-        Calendar.getInstance()
-            .apply { set(year, month, day) }
-            .timeInMillis
-        987
     }
 
     data class ItemModel(
