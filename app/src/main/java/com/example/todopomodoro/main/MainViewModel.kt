@@ -68,6 +68,7 @@ class MainViewModel(
         val dueDate = dateParser(year, month, day)
 
         itemsRepository.update(item.id, item.copy(dueDate = dueDate))
+        items.update { getItems.exec().map(itemMapper::map) }
     }
 
     data class ItemModel(
