@@ -20,7 +20,7 @@ class MainViewModel(
 
     fun onDoneClicked(value: String) {
         val generatedId = idGenerator()
-        itemsRepository.update(generatedId, ItemEntity(generatedId, value, false))
+        itemsRepository.update(generatedId, ItemEntity(generatedId, value, false, null))
 
         items.update { getItems.exec().map(itemMapper::map) }
     }

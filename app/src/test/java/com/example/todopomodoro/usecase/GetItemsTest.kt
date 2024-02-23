@@ -31,5 +31,6 @@ class GetItemsTest {
         id = "item_id",
         text = "Item",
         isComplete = false,
+        dueDate = null,
     )
 }

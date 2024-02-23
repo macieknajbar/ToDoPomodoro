@@ -32,6 +32,7 @@ class ItemMapperTest {
             id = "item_id",
             text = "Item text",
             isComplete = true,
+            dueDate = null,
         )
         val actual = ItemMapper().map(input)
 

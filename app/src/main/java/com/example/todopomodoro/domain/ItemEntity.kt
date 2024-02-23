@@ -4,4 +4,5 @@ data class ItemEntity(
     val id: String,
     val text: String,
     val isComplete: Boolean,
+    val dueDate: Long?,
 )

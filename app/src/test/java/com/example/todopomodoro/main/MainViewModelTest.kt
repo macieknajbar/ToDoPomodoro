@@ -31,7 +31,7 @@ internal class MainViewModelTest {
         verify(itemsRepository)
             .update(
                 id = generatedId,
-                record = ItemEntity(
+                record = itemEntityFake.copy(
                     id = generatedId,
                     text = value,
                     isComplete = false
@@ -132,5 +132,6 @@ internal class MainViewModelTest {
         id = "item_id",
         text = "Item",
         isComplete = false,
+        dueDate = null,
     )
 }
