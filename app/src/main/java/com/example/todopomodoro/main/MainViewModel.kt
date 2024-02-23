@@ -2,12 +2,12 @@ package com.example.todopomodoro.main
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.usecase.GetItems
 import com.example.todopomodoro.utils.update
-import java.text.SimpleDateFormat
 import java.util.Calendar
 
 class MainViewModel(
@@ -76,5 +76,7 @@ class MainViewModel(
         val name: String,
         val isChecked: Boolean = false,
         val shouldShowDatePicker: Boolean = false,
+        val dateText: String,
+        val dateColor: Color,
     )
 }

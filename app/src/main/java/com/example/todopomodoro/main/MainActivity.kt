@@ -3,8 +3,6 @@ package com.example.todopomodoro.main
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
-import android.widget.DatePicker
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -14,19 +12,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.isVisible
-import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
 import com.example.todopomodoro.main.widgets.Item
 import com.example.todopomodoro.main.widgets.NewItemField
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 import com.example.todopomodoro.utils.viewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -69,8 +62,8 @@ private fun Screen(
                 onCheckChanged = { onCheckChanged(item.id, it) },
                 isChecked = item.isChecked,
                 onDateClicked = { onDateClicked(item.id) },
-                dateText = stringResource(R.string.item_date_empty),
-                dateColor = Color.Black,
+                dateText = item.dateText, //stringResource(R.string.item_date_empty),
+                dateColor = item.dateColor,
             )
         }
 
@@ -95,11 +88,33 @@ private fun Screen(
 @Composable
 @Preview(showBackground = true)
 private fun ScreenPreview() {
+    val item = MainViewModel.ItemModel(
+        id = "1",
+        name = "Item 1",
+        dateText = "No Date",
+        dateColor = Color.Black,
+    )
     ToDoPomodoroTheme {
         Screen(
             items = listOf(
-                MainViewModel.ItemModel(id = "1", name = "Task 1", isChecked = false),
-                MainViewModel.ItemModel(id = "2", name = "Task 2", isChecked = true),
+                item.copy(
+                    id = "1",
+                    name = "Item 1",
+                    dateText = "No Date",
+                    dateColor = Color.Black,
+                ),
+                item.copy(
+                    id = "2",
+                    name = "Item 2",
+                    dateText = "01/01/23",
+                    dateColor = Color.Red,
+                ),
+                item.copy(
+                    id = "3",
+                    name = "Item 3",
+                    dateText = "01/01/30",
+                    dateColor = Color.Black,
+                ),
             )
         )
     }
