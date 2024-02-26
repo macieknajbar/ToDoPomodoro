@@ -32,6 +32,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.routing.observe(this) {
+            when (it) {
+                MainViewModel.Routing.Idle -> Unit
+                is MainViewModel.Routing.PomodoroTimer -> Unit
+            }
+        }
+
         setContent {
             ToDoPomodoroTheme {
                 // A surface container using the 'background' color from the theme
@@ -64,7 +72,7 @@ private fun Screen(
     onDateSelected: (Int, Int, Int) -> Unit = { _, _, _ -> },
     onDateCancelClicked: () -> Unit = {},
     onTextClicked: (String) -> Unit = {},
-    onItemDoneClicked: (String, String) -> Unit = { _, _ -> }
+    onItemDoneClicked: (String, String) -> Unit = { _, _ -> },
 ) {
     Column {
         for (item in viewState.items) {

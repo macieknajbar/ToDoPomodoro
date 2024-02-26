@@ -1,5 +1,7 @@
 package com.example.todopomodoro.main.vm
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.model.ItemModel
@@ -24,6 +26,17 @@ class MainViewModel(
 
     val state = MutableStateFlow(State())
     val viewState: Flow<ViewState> = state.map(viewStateMapper::map)
+    val routing = MutableLiveData<Routing>(Routing.Idle)
+
+    private fun MutableStateFlow<Routing>.navigateTo(block: (Routing) -> Routing) {
+        update(block)
+        update { Routing.Idle }
+    }
+
+    sealed class Routing {
+        object Idle : Routing()
+        data class PomodoroTimer(val itemId: String) : Routing()
+    }
 
     private val itemsRepositoryObserver: (List<ItemEntity>) -> Unit =
         { items -> state.update { it.copy(items = items) } }
