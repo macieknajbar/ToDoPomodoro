@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                         onDateClicked = viewModel::onDateClicked,
                         onDateSelected = viewModel::onDateSelected,
                         onDateCancelClicked = viewModel::onDateCancelClicked,
+                        onTextClicked = viewModel::onTextClicked,
                     )
                 }
             }
@@ -61,6 +62,7 @@ private fun Screen(
     onDateClicked: (String) -> Unit = {},
     onDateSelected: (Int, Int, Int) -> Unit = { _, _, _ -> },
     onDateCancelClicked: () -> Unit = {},
+    onTextClicked: (String) -> Unit = {},
 ) {
     Column {
         for (item in viewState.items) {
@@ -72,6 +74,7 @@ private fun Screen(
                 dateText = item.dateText,
                 dateColor = item.dateColor,
                 isBeingEdited = item.isBeingEdited,
+                onTextClicked = { onTextClicked(item.id) }
             )
         }
 

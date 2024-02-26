@@ -38,6 +38,7 @@ fun Item(
     dateText: String,
     dateColor: Color,
     isBeingEdited: Boolean = false,
+    onTextClicked: () -> Unit = {},
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
@@ -61,6 +62,7 @@ fun Item(
                 text = text,
                 modifier = Modifier
                     .weight(1f)
+                    .clickable(onClick = onTextClicked)
                     .padding(end = 8.dp),
                 softWrap = false,
                 overflow = TextOverflow.Ellipsis,
@@ -87,16 +89,16 @@ fun Item(
 private fun ItemPreview() {
     ToDoPomodoroTheme {
         Column {
-            Item("Text", dateText = "01/01/99", dateColor = Color.Black)
+            Item("Text", dateText = "01/01/99", dateColor = Color.Black,)
             Item(
                 "Text looooooooooooooooooooooooooooooooooooooong",
                 dateText = "01/01/99",
-                dateColor = Color.Black
+                dateColor = Color.Black,
             )
-            Item("Checked", isChecked = true, dateText = "01/01/99", dateColor = Color.Black)
-            Item("With Date", dateText = "01/01/99", dateColor = Color.Black)
-            Item("Past due", dateText = "31/12/23", dateColor = Color.Red)
-            Item("Editting", dateText = "01/01/99", dateColor = Color.Black, isBeingEdited = true)
+            Item("Checked", isChecked = true, dateText = "01/01/99", dateColor = Color.Black,)
+            Item("With Date", dateText = "01/01/99", dateColor = Color.Black,)
+            Item("Past due", dateText = "31/12/23", dateColor = Color.Red,)
+            Item("Editting", dateText = "01/01/99", dateColor = Color.Black, isBeingEdited = true,)
         }
     }
 }
