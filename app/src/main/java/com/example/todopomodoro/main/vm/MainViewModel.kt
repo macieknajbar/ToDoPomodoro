@@ -71,12 +71,13 @@ class MainViewModel(
     }
 
     fun onTextClicked(itemId: String) {
-
+        state.update { it.copy(editItemId = itemId) }
     }
 
     data class State(
         val items: List<ItemEntity> = emptyList(),
         val dateSelectionItemId: String? = null,
+        val editItemId: String? = null,
     )
 
     data class ViewState(

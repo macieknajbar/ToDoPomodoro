@@ -102,6 +102,24 @@ internal class MainViewModelTest {
         verify(itemsRepository).update(item.id, updatedItem)
     }
 
+    @Test
+    fun `ON onTextClicked SHOULD set the item in edit mode`() {
+        val itemsRepository: Repository<ItemEntity> = mock()
+        val item = Fakes.item.copy(id = "edit_item_id")
+
+        with(KArgCaptor<(List<ItemEntity>) -> Unit> {}) {
+            `when`(itemsRepository.addObserver(capture())).then { value(listOf(Fakes.item, item)) }
+        }
+
+        val sut = sut(itemsRepository = itemsRepository)
+            .apply { onTextClicked(item.id) }
+
+        assertEquals(
+            item.id,
+            sut.state.value.editItemId,
+        )
+    }
+
     class KArgCaptor<T>(private val defValue: T) {
         private val captor: ArgumentCaptor<T> = ArgumentCaptor.captor()
         val value: T get() = captor.value
