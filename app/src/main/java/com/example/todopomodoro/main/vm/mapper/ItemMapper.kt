@@ -14,6 +14,10 @@ class ItemMapper(
     private val stringProvider: (Int) -> String = stringProvider(),
 ) {
     fun map(input: ItemEntity): ItemModel {
+        return map(input, null)
+    }
+
+    fun map(input: ItemEntity, editItemId: String?): ItemModel {
         val today = timestampProvider()
         val dateText = if (input.dueDate == null) {
             stringProvider(R.string.item_date_empty)
@@ -31,6 +35,7 @@ class ItemMapper(
             } else {
                 Color.Red
             },
+            isBeingEdited = input.id == editItemId,
         )
     }
 }

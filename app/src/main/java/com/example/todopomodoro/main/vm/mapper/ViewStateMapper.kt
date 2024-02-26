@@ -9,7 +9,7 @@ class ViewStateMapper(
         return MainViewModel.ViewState(
             items = state.items
                 .sortedBy { it.isComplete }
-                .map(itemMapper::map),
+                .map { itemMapper.map(it, state.editItemId) },
             shouldShowDatePicker = state.dateSelectionItemId != null,
         )
     }
