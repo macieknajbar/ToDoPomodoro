@@ -71,6 +71,7 @@ private fun Screen(
                 onDateClicked = { onDateClicked(item.id) },
                 dateText = item.dateText,
                 dateColor = item.dateColor,
+                isBeingEdited = item.isBeingEdited,
             )
         }
 

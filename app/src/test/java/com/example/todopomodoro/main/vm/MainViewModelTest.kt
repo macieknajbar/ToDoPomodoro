@@ -2,11 +2,11 @@ package com.example.todopomodoro.main.vm
 
 import com.example.todopomodoro.Fakes.Fakes
 import com.example.todopomodoro.domain.ItemEntity
-import com.example.todopomodoro.main.vm.mapper.ItemMapper
 import com.example.todopomodoro.repository.Repository
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.Mockito
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.*
 
 internal class MainViewModelTest {
 
@@ -14,16 +14,16 @@ internal class MainViewModelTest {
     fun `ON onDoneClicked SHOULD add new item`() {
         val generatedId = "items_id"
         val value = "Hello world!"
-        val itemsRepository: Repository<ItemEntity> = Mockito.mock()
+        val itemsRepository: Repository<ItemEntity> = mock()
 
-        Mockito.`when`(itemsRepository.getAll()).thenReturn(emptyList())
+        `when`(itemsRepository.getAll()).thenReturn(emptyList())
 
         sut(
             itemsRepository = itemsRepository,
             idGenerator = { generatedId },
         ).apply { onDoneClicked(value) }
 
-        Mockito.verify(itemsRepository)
+        verify(itemsRepository)
             .update(
                 id = generatedId,
                 record = Fakes.item.copy(
@@ -36,17 +36,17 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onCheckChanged SHOULD mark the task as completed`() {
-        val itemEntity1 = Fakes.item.copy(id = "item_1")
-        val items = listOf(itemEntity1)
-        val itemsRepository: Repository<ItemEntity> = Mockito.mock()
+        val item = Fakes.item.copy(id = "item_1")
+        val itemsRepository: Repository<ItemEntity> = mock()
 
-        Mockito.`when`(itemsRepository.getAll()).thenReturn(items)
+        with(KArgCaptor<(List<ItemEntity>) -> Unit> {}) {
+            `when`(itemsRepository.addObserver(capture())).then { value(listOf(item)) }
+        }
 
         sut(itemsRepository = itemsRepository)
-            .apply { onCheckChanged(itemEntity1.id, true) }
+            .apply { onCheckChanged(item.id, true) }
 
-        Mockito.verify(itemsRepository).update(itemEntity1.id, itemEntity1.copy(isComplete = true))
-        Mockito.verify(itemsRepository, Mockito.times(2)).getAll()
+        verify(itemsRepository).update(item.id, item.copy(isComplete = true))
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class MainViewModelTest {
         val sut = sut()
             .apply { onDateClicked(items.first().id) }
 
-        Assert.assertEquals(
+        assertEquals(
             items.first().id,
             sut.state.value.dateSelectionItemId
         )
@@ -64,11 +64,13 @@ internal class MainViewModelTest {
 
     @Test
     fun `ON onDateSelected SHOULD set date on specified item`() {
-        val itemsRepository: Repository<ItemEntity> = Mockito.mock()
+        val itemsRepository: Repository<ItemEntity> = mock()
         val item = Fakes.item
         val updatedItem = item.copy(dueDate = 987)
 
-        Mockito.`when`(itemsRepository.getAll()).thenReturn(listOf(item))
+        with(KArgCaptor<(List<ItemEntity>) -> Unit> {}) {
+            `when`(itemsRepository.addObserver(capture())).then { value(listOf(item)) }
+        }
 
         sut(
             itemsRepository = itemsRepository,
@@ -78,16 +80,18 @@ internal class MainViewModelTest {
             onDateSelected(1, 2, 3)
         }
 
-        Mockito.verify(itemsRepository).update(item.id, updatedItem)
+        verify(itemsRepository).update(item.id, updatedItem)
     }
 
     @Test
     fun `ON onDateCancelClicked SHOULD remove due date`() {
-        val itemsRepository: Repository<ItemEntity> = Mockito.mock()
+        val itemsRepository: Repository<ItemEntity> = mock()
         val item = Fakes.item.copy(dueDate = 987)
         val updatedItem = item.copy(dueDate = null)
 
-        Mockito.`when`(itemsRepository.getAll()).thenReturn(listOf(item))
+        with(KArgCaptor<(List<ItemEntity>) -> Unit> {}) {
+            `when`(itemsRepository.addObserver(capture())).then { value(listOf(item)) }
+        }
 
         sut(itemsRepository = itemsRepository)
             .apply {
@@ -95,13 +99,22 @@ internal class MainViewModelTest {
                 onDateCancelClicked()
             }
 
-        Mockito.verify(itemsRepository).update(item.id, updatedItem)
+        verify(itemsRepository).update(item.id, updatedItem)
+    }
+
+    class KArgCaptor<T>(private val defValue: T) {
+        private val captor: ArgumentCaptor<T> = ArgumentCaptor.captor()
+        val value: T get() = captor.value
+
+        fun capture(): T {
+            return captor.capture() ?: defValue
+        }
     }
 
     private fun sut(
-        itemsRepository: Repository<ItemEntity> = Mockito.mock(),
-        idGenerator: () -> String = Mockito.mock(),
-        dateParser: (year: Int, month: Int, day: Int) -> Long = Mockito.mock(),
+        itemsRepository: Repository<ItemEntity> = mock(),
+        idGenerator: () -> String = mock(),
+        dateParser: (year: Int, month: Int, day: Int) -> Long = mock(),
     ) = MainViewModel(
         itemsRepository = itemsRepository,
         idGenerator = idGenerator,

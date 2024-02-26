@@ -9,4 +9,5 @@ data class ItemModel(
     val shouldShowDatePicker: Boolean = false,
     val dateText: String,
     val dateColor: Color,
+    val isBeingEdited: Boolean = false,
 )
