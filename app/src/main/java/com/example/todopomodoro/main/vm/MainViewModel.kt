@@ -74,6 +74,14 @@ class MainViewModel(
         state.update { it.copy(editItemId = itemId) }
     }
 
+    fun onItemDoneClicked(itemId: String, text: String) {
+        val updatedItem = state.value.items
+            .first { it.id == itemId }
+            .copy(text = text)
+        itemsRepository.update(updatedItem.id, updatedItem)
+        state.update { it.copy(editItemId = null) }
+    }
+
     data class State(
         val items: List<ItemEntity> = emptyList(),
         val dateSelectionItemId: String? = null,

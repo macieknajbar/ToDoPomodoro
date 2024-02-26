@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Checkbox
@@ -39,6 +40,7 @@ fun Item(
     dateColor: Color,
     isBeingEdited: Boolean = false,
     onTextClicked: () -> Unit = {},
+    onDoneClicked: (String) -> Unit = {},
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
@@ -55,7 +57,10 @@ fun Item(
                 singleLine = true,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                keyboardActions = KeyboardActions(onDone = {
+                    onDoneClicked(value)
+                }),
             )
         } else {
             Text(
