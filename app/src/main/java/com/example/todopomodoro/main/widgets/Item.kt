@@ -41,6 +41,7 @@ fun Item(
     isBeingEdited: Boolean = false,
     onTextClicked: () -> Unit = {},
     onDoneClicked: (String) -> Unit = {},
+    onIconClicked: () -> Unit = {},
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
@@ -85,6 +86,7 @@ fun Item(
             modifier = Modifier
                 .size(48.dp)
                 .padding(8.dp)
+                .clickable(onClick = onIconClicked)
         )
     }
 }

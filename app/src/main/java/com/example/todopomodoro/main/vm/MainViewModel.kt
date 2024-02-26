@@ -28,9 +28,9 @@ class MainViewModel(
     val viewState: Flow<ViewState> = state.map(viewStateMapper::map)
     val routing = MutableLiveData<Routing>(Routing.Idle)
 
-    private fun MutableStateFlow<Routing>.navigateTo(block: (Routing) -> Routing) {
-        update(block)
-        update { Routing.Idle }
+    private fun MutableLiveData<Routing>.navigateTo(screen: Routing) {
+        value = screen
+        value = Routing.Idle
     }
 
     sealed class Routing {
@@ -93,6 +93,10 @@ class MainViewModel(
             .copy(text = text)
         itemsRepository.update(updatedItem.id, updatedItem)
         state.update { it.copy(editItemId = null) }
+    }
+
+    fun onIconClicked(itemId: String) {
+        routing.navigateTo(Routing.PomodoroTimer(itemId = itemId))
     }
 
     data class State(

@@ -1,6 +1,7 @@
 package com.example.todopomodoro.main.ui
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -19,6 +20,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.isVisible
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
+import com.example.todopomodoro.main.features.PomodoroTimerActivity
 import com.example.todopomodoro.main.model.ItemModel
 import com.example.todopomodoro.main.vm.MainViewModel
 import com.example.todopomodoro.main.widgets.Item
@@ -36,7 +38,7 @@ class MainActivity : ComponentActivity() {
         viewModel.routing.observe(this) {
             when (it) {
                 MainViewModel.Routing.Idle -> Unit
-                is MainViewModel.Routing.PomodoroTimer -> Unit
+                is MainViewModel.Routing.PomodoroTimer -> startActivity(Intent(this, PomodoroTimerActivity::class.java))
             }
         }
 
@@ -56,6 +58,7 @@ class MainActivity : ComponentActivity() {
                         onDateCancelClicked = viewModel::onDateCancelClicked,
                         onTextClicked = viewModel::onTextClicked,
                         onItemDoneClicked = viewModel::onItemDoneClicked,
+                        onIconClicked = viewModel::onIconClicked,
                     )
                 }
             }
@@ -73,6 +76,7 @@ private fun Screen(
     onDateCancelClicked: () -> Unit = {},
     onTextClicked: (String) -> Unit = {},
     onItemDoneClicked: (String, String) -> Unit = { _, _ -> },
+    onIconClicked: (String) -> Unit = {},
 ) {
     Column {
         for (item in viewState.items) {
@@ -86,6 +90,7 @@ private fun Screen(
                 isBeingEdited = item.isBeingEdited,
                 onTextClicked = { onTextClicked(item.id) },
                 onDoneClicked = { onItemDoneClicked(item.id, it) },
+                onIconClicked = { onIconClicked(item.id) }
             )
         }
 
