@@ -33,7 +33,6 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 import com.example.todopomodoro.utils.update
 
 class PomodoroTimerFragment : Fragment() {
-    private val itemsRepository = itemsRepository()
     private val viewModel by lazy {
         PomodoroTimerViewModel(
             itemId = requireArguments().getString(EXTRA_ITEM_ID, ""),
@@ -46,10 +45,6 @@ class PomodoroTimerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val itemId = requireArguments().getString(EXTRA_ITEM_ID)
-        val item = itemsRepository.getAll()
-            .first { it.id == itemId }
-        val viewState = mutableStateOf(ViewState(title = item.text))
         return ComposeView(requireContext()).apply {
             setContent {
                 Screen(
