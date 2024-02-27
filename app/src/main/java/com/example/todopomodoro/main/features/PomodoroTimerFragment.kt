@@ -26,11 +26,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.example.todopomodoro.domain.ItemEntity
+import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.repository.di.itemsRepository
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
+import com.example.todopomodoro.utils.update
 
 class PomodoroTimerFragment : Fragment() {
     private val itemsRepository = itemsRepository()
+    private val viewModel by lazy {
+        PomodoroTimerViewModel(
+            itemId = requireArguments().getString(EXTRA_ITEM_ID, ""),
+            itemsRepository = itemsRepository(),
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +53,7 @@ class PomodoroTimerFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Screen(
-                    viewState = viewState.value
+                    viewState = viewModel.viewState.value
                 )
             }
         }
@@ -60,6 +69,21 @@ class PomodoroTimerFragment : Fragment() {
                 )
             }
         }
+    }
+}
+
+class PomodoroTimerViewModel(
+    val itemId: String,
+    val itemsRepository: Repository<ItemEntity>,
+) {
+
+    val viewState = mutableStateOf(ViewState())
+
+    init {
+        val item = itemsRepository.getAll()
+            .first { it.id == itemId }
+
+        viewState.update { copy(title = item.text) }
     }
 }
 
