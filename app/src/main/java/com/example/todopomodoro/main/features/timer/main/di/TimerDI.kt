@@ -1,6 +1,6 @@
-package com.example.todopomodoro.main.features.timer.di
+package com.example.todopomodoro.main.features.timer.main.di
 
-import com.example.todopomodoro.main.features.timer.TimerViewModel
+import com.example.todopomodoro.main.features.timer.main.TimerViewModel
 import com.example.todopomodoro.repository.di.itemsRepository
 
 fun timerViewModel(itemId: String): TimerViewModel =

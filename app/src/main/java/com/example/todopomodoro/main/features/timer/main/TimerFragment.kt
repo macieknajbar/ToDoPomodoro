@@ -1,4 +1,4 @@
-package com.example.todopomodoro.main.features.timer
+package com.example.todopomodoro.main.features.timer.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,6 @@ import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
@@ -26,12 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import com.example.todopomodoro.domain.ItemEntity
-import com.example.todopomodoro.main.features.timer.di.timerViewModel
-import com.example.todopomodoro.repository.Repository
+import com.example.todopomodoro.main.features.timer.main.di.timerViewModel
+import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
-import com.example.todopomodoro.utils.update
 import com.example.todopomodoro.utils.viewModel
 
 class TimerFragment : Fragment() {
@@ -66,28 +62,9 @@ class TimerFragment : Fragment() {
     }
 }
 
-class TimerViewModel(
-    val itemId: String,
-    val itemsRepository: Repository<ItemEntity>,
-) : ViewModel() {
-
-    val viewState = mutableStateOf(ViewState())
-
-    init {
-        val item = itemsRepository.getAll()
-            .first { it.id == itemId }
-
-        viewState.update { copy(title = item.text) }
-    }
-}
-
-data class ViewState(
-    val title: String = "",
-)
-
 @Composable
 private fun Screen(
-    viewState: ViewState,
+    viewState: TimerViewState,
 ) {
     ToDoPomodoroTheme {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -128,6 +105,6 @@ private fun Screen(
 @Preview(showBackground = true)
 private fun ScreenPreview() {
     Screen(
-        viewState = ViewState(title = "Item with a very long title and with long long description")
+        viewState = TimerViewState(title = "Item with a very long title and with long long description")
     )
 }

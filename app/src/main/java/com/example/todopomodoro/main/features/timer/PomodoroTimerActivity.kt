@@ -1,4 +1,4 @@
-package com.example.todopomodoro.main.features
+package com.example.todopomodoro.main.features.timer
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
-import com.example.todopomodoro.main.features.timer.TimerFragment
+import com.example.todopomodoro.main.features.timer.main.TimerFragment
 
 class PomodoroTimerActivity : FragmentActivity() {
 

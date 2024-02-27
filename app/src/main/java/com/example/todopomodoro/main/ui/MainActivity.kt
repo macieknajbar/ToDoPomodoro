@@ -20,7 +20,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.isVisible
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.di.mainViewModel
-import com.example.todopomodoro.main.features.PomodoroTimerActivity
+import com.example.todopomodoro.main.features.timer.PomodoroTimerActivity
 import com.example.todopomodoro.main.model.ItemModel
 import com.example.todopomodoro.main.vm.MainViewModel
 import com.example.todopomodoro.main.widgets.Item
