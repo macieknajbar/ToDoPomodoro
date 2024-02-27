@@ -32,4 +32,8 @@ class PomodoroTimerActivity : FragmentActivity() {
             )
         }
     }
+
+    companion object {
+        const val EXTRA_ITEM_ID = "todopomodorotimer:PomodoroTimer:EXTRA_ITEM_ID"
+    }
 }

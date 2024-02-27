@@ -38,7 +38,10 @@ class MainActivity : ComponentActivity() {
         viewModel.routing.observe(this) {
             when (it) {
                 MainViewModel.Routing.Idle -> Unit
-                is MainViewModel.Routing.PomodoroTimer -> startActivity(Intent(this, PomodoroTimerActivity::class.java))
+                is MainViewModel.Routing.PomodoroTimer -> startActivity(
+                    Intent(this, PomodoroTimerActivity::class.java)
+                        .putExtra(PomodoroTimerActivity.EXTRA_ITEM_ID, it.itemId)
+                )
             }
         }
 
