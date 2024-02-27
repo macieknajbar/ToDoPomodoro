@@ -1,4 +1,4 @@
-package com.example.todopomodoro.main.features
+package com.example.todopomodoro.main.features.timer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,18 +26,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
+import com.example.todopomodoro.main.features.timer.di.timerViewModel
 import com.example.todopomodoro.repository.Repository
-import com.example.todopomodoro.repository.di.itemsRepository
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 import com.example.todopomodoro.utils.update
+import com.example.todopomodoro.utils.viewModel
 
-class PomodoroTimerFragment : Fragment() {
-    private val viewModel by lazy {
-        PomodoroTimerViewModel(
-            itemId = requireArguments().getString(EXTRA_ITEM_ID, ""),
-            itemsRepository = itemsRepository(),
-        )
+class TimerFragment : Fragment() {
+    private val viewModel by viewModel {
+        timerViewModel(itemId = requireArguments().getString(EXTRA_ITEM_ID, ""))
     }
 
     override fun onCreateView(
@@ -55,10 +54,10 @@ class PomodoroTimerFragment : Fragment() {
     }
 
     companion object {
-        private const val EXTRA_ITEM_ID = "todopomodoro:PomodoroTimerFragment:EXTRA_ITEM_ID"
+        private const val EXTRA_ITEM_ID = "todopomodoro:TimerFragment:EXTRA_ITEM_ID"
 
-        fun newInstance(itemId: String): PomodoroTimerFragment {
-            return PomodoroTimerFragment().apply {
+        fun newInstance(itemId: String): TimerFragment {
+            return TimerFragment().apply {
                 arguments = bundleOf(
                     EXTRA_ITEM_ID to itemId
                 )
@@ -67,10 +66,10 @@ class PomodoroTimerFragment : Fragment() {
     }
 }
 
-class PomodoroTimerViewModel(
+class TimerViewModel(
     val itemId: String,
     val itemsRepository: Repository<ItemEntity>,
-) {
+) : ViewModel() {
 
     val viewState = mutableStateOf(ViewState())
 
