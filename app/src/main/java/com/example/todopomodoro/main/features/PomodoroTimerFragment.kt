@@ -14,30 +14,32 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import com.example.todopomodoro.repository.di.itemsRepository
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
-class PomodoroTimerFragment : Fragment() {
+class PomodoroTimerFragment(val itemId: String) : Fragment() {
+    private val itemsRepository = itemsRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        val item = itemsRepository.getAll()
+            .first { it.id == itemId }
         return ComposeView(requireContext()).apply {
             setContent {
-                Screen("Fragment 1")
+                Screen(text = item.text)
             }
         }
     }
