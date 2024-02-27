@@ -16,6 +16,7 @@ import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
@@ -39,9 +40,12 @@ class PomodoroTimerFragment : Fragment() {
         val itemId = requireArguments().getString(EXTRA_ITEM_ID)
         val item = itemsRepository.getAll()
             .first { it.id == itemId }
+        val viewState = mutableStateOf(ViewState(title = item.text))
         return ComposeView(requireContext()).apply {
             setContent {
-                Screen(text = item.text)
+                Screen(
+                    viewState = viewState.value
+                )
             }
         }
     }
@@ -59,12 +63,18 @@ class PomodoroTimerFragment : Fragment() {
     }
 }
 
+data class ViewState(
+    val title: String = "",
+)
+
 @Composable
-private fun Screen(text: String) {
+private fun Screen(
+    viewState: ViewState,
+) {
     ToDoPomodoroTheme {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(
-                text = text,
+                text = viewState.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 48.dp, horizontal = 16.dp),
@@ -99,5 +109,7 @@ private fun Screen(text: String) {
 @Composable
 @Preview(showBackground = true)
 private fun ScreenPreview() {
-    Screen("Item with a very long title and with long long description")
+    Screen(
+        viewState = ViewState(title = "Item with a very long title and with long long description")
+    )
 }
