@@ -4,4 +4,5 @@
     <string name="item_date_empty">No Date</string>
 
     <string name="datePicker_remove">Remove</string>
+    <string name="timer_play">Play</string>
 </resources>

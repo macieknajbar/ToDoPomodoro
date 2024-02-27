@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.example.todopomodoro.R
 import com.example.todopomodoro.main.features.timer.main.di.timerViewModel
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
@@ -81,7 +83,7 @@ private fun Screen(
             Row {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "20:00",
+                    text = viewState.timeText,
                     fontSize = 60.sp
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -91,7 +93,7 @@ private fun Screen(
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     imageVector = Icons.Sharp.PlayArrow,
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.timer_play),
                     modifier = Modifier
                         .size(120.dp)
                 )
@@ -105,6 +107,9 @@ private fun Screen(
 @Preview(showBackground = true)
 private fun ScreenPreview() {
     Screen(
-        viewState = TimerViewState(title = "Item with a very long title and with long long description")
+        viewState = TimerViewState(
+            title = "Item with a very long title and with long long description",
+            timeText = "19:59",
+        )
     )
 }
