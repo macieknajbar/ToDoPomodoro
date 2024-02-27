@@ -23,11 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.todopomodoro.repository.di.itemsRepository
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 
-class PomodoroTimerFragment(val itemId: String) : Fragment() {
+class PomodoroTimerFragment : Fragment() {
     private val itemsRepository = itemsRepository()
 
     override fun onCreateView(
@@ -35,11 +36,24 @@ class PomodoroTimerFragment(val itemId: String) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        val itemId = requireArguments().getString(EXTRA_ITEM_ID)
         val item = itemsRepository.getAll()
             .first { it.id == itemId }
         return ComposeView(requireContext()).apply {
             setContent {
                 Screen(text = item.text)
+            }
+        }
+    }
+
+    companion object {
+        private const val EXTRA_ITEM_ID = "todopomodoro:PomodoroTimerFragment:EXTRA_ITEM_ID"
+
+        fun newInstance(itemId: String): PomodoroTimerFragment {
+            return PomodoroTimerFragment().apply {
+                arguments = bundleOf(
+                    EXTRA_ITEM_ID to itemId
+                )
             }
         }
     }

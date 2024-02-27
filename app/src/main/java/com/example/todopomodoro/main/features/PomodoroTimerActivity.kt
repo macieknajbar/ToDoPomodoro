@@ -23,10 +23,13 @@ class PomodoroTimerActivity : FragmentActivity() {
                     FragmentContainerView(it).apply { id = fragmentContainerId }
                 },
                 update = { view ->
-                    if (savedInstanceState == null) {
-                        supportFragmentManager.commit {
-                            replace(view.id, PomodoroTimerFragment(intent.extras!!.getString(EXTRA_ITEM_ID)!!))
-                        }
+                    supportFragmentManager.commit {
+                        replace(
+                            view.id,
+                            PomodoroTimerFragment.newInstance(
+                                intent.getStringExtra(EXTRA_ITEM_ID)!!
+                            )
+                        )
                     }
                 }
             )
