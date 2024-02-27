@@ -6,6 +6,11 @@ object ItemsRepository: Repository<ItemEntity> {
     private val items = mutableMapOf<String, ItemEntity>()
     private val observers: MutableList<(List<ItemEntity>) -> Unit> = mutableListOf()
 
+    init {
+        ItemEntity(id = "1", text = "Item Test")
+            .let { update(it.id, it) }
+    }
+
     override fun update(id: String, record: ItemEntity) {
         items[id] = record
         observers.forEach { it(items.values.toList()) }
