@@ -17,6 +17,7 @@ import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -46,7 +47,7 @@ class TimerFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Screen(
-                    viewState = viewModel.viewState.value,
+                    viewState = viewModel.viewState.collectAsState(TimerViewState()).value,
                     onStartClicked = viewModel::onStartClicked,
                 )
             }

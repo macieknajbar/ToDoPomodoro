@@ -1,13 +1,15 @@
 package com.example.todopomodoro.main.features.timer.main
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
 import com.example.todopomodoro.repository.Repository
-import com.example.todopomodoro.utils.update
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -16,37 +18,43 @@ class TimerViewModel(
     val itemsRepository: Repository<ItemEntity>,
 ) : ViewModel() {
 
-    val viewState = mutableStateOf(TimerViewState())
+    val state = MutableStateFlow(TimerState())
+    val viewState: Flow<TimerViewState> = state.map {
+        val minutes = TimeUnit.MILLISECONDS
+            .toMinutes(it.timeLeft)
+        val seconds = TimeUnit.MILLISECONDS
+            .toSeconds(it.timeLeft - TimeUnit.MINUTES.toMillis(minutes))
+            .toString()
+
+        TimerViewState(
+            title = it.title,
+            timeText = "$minutes:${"00$seconds".substring(seconds.length)}"
+        )
+    }
 
     init {
         val item = itemsRepository.getAll()
             .first { it.id == itemId }
 
-        viewState.update {
-            copy(
-                title = item.text,
-                timeText = "20:00",
-            )
-        }
+        state.update { it.copy(title = item.text) }
     }
 
     fun onStartClicked() {
         viewModelScope.launch {
             var now = System.currentTimeMillis()
-            val time = TimeUnit.MINUTES.toMillis(2)
+            val time = state.value.timeLeft
             val endTime = now + time - 1
 
             while (now < endTime) {
-                var timeLeft = endTime - now
-                val minutes = TimeUnit.MILLISECONDS.toMinutes(timeLeft)
-                timeLeft -= TimeUnit.MINUTES.toMillis(minutes)
-                val seconds = TimeUnit.MILLISECONDS.toSeconds(timeLeft)
-
-                val secondsText = if (seconds < 10) "0$seconds" else seconds
-                viewState.update { copy(timeText = "$minutes:$secondsText") }
+                state.update { it.copy(timeLeft = endTime - now) }
                 delay(1000)
                 now = System.currentTimeMillis()
             }
         }
     }
+
+    data class TimerState(
+        val title: String = "",
+        val timeLeft: Long = TimeUnit.MINUTES.toMillis(20),
+    )
 }
