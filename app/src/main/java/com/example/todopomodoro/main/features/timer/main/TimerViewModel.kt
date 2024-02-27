@@ -28,17 +28,20 @@ class TimerViewModel(
                 timeText = "20:00",
             )
         }
+    }
 
+    fun onStartClicked() {
         viewModelScope.launch {
             var now = System.currentTimeMillis()
-            val time = TimeUnit.MINUTES.toMillis(20)
+            val time = TimeUnit.MINUTES.toMillis(2)
             val endTime = now + time - 1
 
-            while(now < endTime) {
-                val minutes = TimeUnit.MILLISECONDS.toMinutes(endTime - now)
-                val seconds = TimeUnit.MILLISECONDS.toSeconds(
-                    endTime - now - TimeUnit.MINUTES.toMillis(minutes)
-                )
+            while (now < endTime) {
+                var timeLeft = endTime - now
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(timeLeft)
+                timeLeft -= TimeUnit.MINUTES.toMillis(minutes)
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(timeLeft)
+
                 val secondsText = if (seconds < 10) "0$seconds" else seconds
                 viewState.update { copy(timeText = "$minutes:$secondsText") }
                 delay(1000)

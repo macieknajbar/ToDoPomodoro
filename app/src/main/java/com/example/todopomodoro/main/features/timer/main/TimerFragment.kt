@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +46,8 @@ class TimerFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 Screen(
-                    viewState = viewModel.viewState.value
+                    viewState = viewModel.viewState.value,
+                    onStartClicked = viewModel::onStartClicked,
                 )
             }
         }
@@ -67,6 +69,7 @@ class TimerFragment : Fragment() {
 @Composable
 private fun Screen(
     viewState: TimerViewState,
+    onStartClicked: () -> Unit = {},
 ) {
     ToDoPomodoroTheme {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -96,6 +99,7 @@ private fun Screen(
                     contentDescription = stringResource(R.string.timer_play),
                     modifier = Modifier
                         .size(120.dp)
+                        .clickable { onStartClicked() }
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }
