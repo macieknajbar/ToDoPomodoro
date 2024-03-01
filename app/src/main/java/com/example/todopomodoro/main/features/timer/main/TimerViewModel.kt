@@ -42,7 +42,7 @@ class TimerViewModel(
         timer.start(
             time = state.value.timeLeft,
             interval = TimeUnit.SECONDS.toMillis(1),
-        ) {}
+        ) { timeLeft -> state.update { it.copy(timeLeft = timeLeft) }}
     }
 
     data class TimerState(

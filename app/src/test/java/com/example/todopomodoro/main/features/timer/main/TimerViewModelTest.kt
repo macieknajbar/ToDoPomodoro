@@ -6,6 +6,8 @@ import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.utils.time.Timer
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
@@ -58,13 +60,38 @@ class TimerViewModelTest {
         )
     }
 
+
+    @Test
+    fun `ON onStartClicked SHOULD update state WHEN timer update triggered`() {
+        val timer: Timer = mock()
+        val captor: ArgumentCaptor<(Long) -> Unit> = ArgumentCaptor.captor()
+        val timeLeft = TimeUnit.MINUTES.toMillis(15)
+
+        with(captor) {
+            `when`(timer.start(anyLong(), anyLong(), kapture())).then { value.invoke(timeLeft) }
+        }
+
+        val sut = sut(timer = timer)
+            .apply { onStartClicked() }
+
+        assertEquals(
+            timeLeft,
+            sut.state.value.timeLeft,
+        )
+    }
+
+    fun <T> ArgumentCaptor<T>.kapture(): T {
+        return capture()
+    }
+
     fun <T> any(): T {
         return Mockito.any()
     }
 
     private fun sut(
-        itemId: String = "",
-        itemsRepository: Repository<ItemEntity> = mock(),
+        itemId: String = Fakes.item.id,
+        itemsRepository: Repository<ItemEntity> = mock<Repository<ItemEntity>>()
+            .apply { `when`(getAll()).thenReturn(listOf(Fakes.item)) },
         timer: Timer = mock(),
     ) = TimerViewModel(
         itemId = itemId,
