@@ -41,8 +41,8 @@ class TimerViewModel(
     fun onStartClicked() {
         timer.start(
             time = state.value.timeLeft,
-            interval = TimeUnit.SECONDS.toMillis(1),
-        ) { timeLeft -> state.update { it.copy(timeLeft = timeLeft) }}
+            onUpdate = { timeLeft -> state.update { it.copy(timeLeft = timeLeft) } },
+        ) { state.update { it.copy(title = "Done") } }
     }
 
     data class TimerState(

@@ -55,8 +55,8 @@ class TimerViewModelTest {
 
         verify(timer).start(
             time = eq(time),
-            interval = eq(interval),
-            onUpdate = any()
+            onUpdate = any(),
+            onComplete = any(),
         )
     }
 
@@ -68,7 +68,7 @@ class TimerViewModelTest {
         val timeLeft = TimeUnit.MINUTES.toMillis(15)
 
         with(captor) {
-            `when`(timer.start(anyLong(), anyLong(), kapture())).then { value.invoke(timeLeft) }
+            `when`(timer.start(anyLong(), kapture(), any())).then { value.invoke(timeLeft) }
         }
 
         val sut = sut(timer = timer)
@@ -77,6 +77,24 @@ class TimerViewModelTest {
         assertEquals(
             timeLeft,
             sut.state.value.timeLeft,
+        )
+    }
+
+    @Test
+    fun `ON onStartClicked SHOULD update state title`() {
+        val timer: Timer = mock()
+        val captor: ArgumentCaptor<() -> Unit> = ArgumentCaptor.captor()
+
+        with(captor) {
+            `when`(timer.start(anyLong(), any(), kapture())).then { value.invoke() }
+        }
+
+        val sut = sut(timer = timer)
+            .apply { onStartClicked() }
+
+        assertEquals(
+            "Done",
+            sut.state.value.title,
         )
     }
 
