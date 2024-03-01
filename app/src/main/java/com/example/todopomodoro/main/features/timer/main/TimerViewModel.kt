@@ -1,21 +1,20 @@
 package com.example.todopomodoro.main.features.timer.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
 import com.example.todopomodoro.repository.Repository
-import kotlinx.coroutines.delay
+import com.example.todopomodoro.utils.time.Timer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class TimerViewModel(
     val itemId: String,
     val itemsRepository: Repository<ItemEntity>,
+    val timer: Timer,
 ) : ViewModel() {
 
     val state = MutableStateFlow(TimerState())
@@ -40,17 +39,10 @@ class TimerViewModel(
     }
 
     fun onStartClicked() {
-        viewModelScope.launch {
-            var now = System.currentTimeMillis()
-            val time = state.value.timeLeft
-            val endTime = now + time - 1
-
-            while (now < endTime) {
-                state.update { it.copy(timeLeft = endTime - now) }
-                delay(1000)
-                now = System.currentTimeMillis()
-            }
-        }
+        timer.start(
+            time = state.value.timeLeft,
+            interval = TimeUnit.SECONDS.toMillis(1),
+        ) {}
     }
 
     data class TimerState(
