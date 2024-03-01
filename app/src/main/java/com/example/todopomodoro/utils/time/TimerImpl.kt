@@ -1,5 +1,6 @@
 package com.example.todopomodoro.utils.time
 
+import java.lang.Thread.sleep
 import kotlin.concurrent.thread
 
 class TimerImpl(
@@ -32,10 +33,15 @@ class TimerImpl(
 //    }
 
     override fun start(time: Long, interval: Long, onUpdate: (Long) -> Unit) {
-        startSync()
+        thread {
+            while(true) {
+                startSync(onUpdate)
+                sleep(interval)
+            }
+        }
     }
 
-    fun startSync() {
-
+    fun startSync(onUpdate: (Long) -> Unit) {
+        onUpdate(0)
     }
 }
