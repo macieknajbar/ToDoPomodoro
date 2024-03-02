@@ -1,18 +1,14 @@
 package com.example.todopomodoro.main.features.timer.main
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.utils.time.Timer
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class TimerViewModel(
@@ -34,7 +30,7 @@ class TimerViewModel(
             timeText = "$minutes:${"00$seconds".substring(seconds.length)}"
         )
     }
-    val routing = MutableLiveData<TimerRouting>(TimerRouting.Idle)
+    private var router: Router<TimerRouting>? = null
 
     init {
         val item = itemsRepository.getAll()
@@ -47,23 +43,29 @@ class TimerViewModel(
         timer.start(
             time = state.value.timeLeft,
             onUpdate = { timeLeft -> state.update { it.copy(timeLeft = timeLeft) } },
-        ) { routing.navigateTo(TimerRouting.Break) }
+        ) { router?.goTo(TimerRouting.Break) }
     }
 
-    fun MutableLiveData<TimerRouting>.navigateTo(screen: TimerRouting) {
-        viewModelScope.launch(Dispatchers.Main) {
-            value = screen
-            value = TimerRouting.Idle
+    fun onNavigation(block: (TimerRouting) -> Unit) {
+        router = Router(block)
+    }
+
+    class Router<T>(val routing: (T) -> Unit) {
+        fun goTo(screen: T) {
+            try {
+                routing(screen)
+            } catch (e: Exception) {
+                // intentionally empty
+            }
         }
     }
 
     data class TimerState(
         val title: String = "",
-        val timeLeft: Long = TimeUnit.SECONDS.toMillis(20),
+        val timeLeft: Long = TimeUnit.SECONDS.toMillis(5),
     )
 
     sealed class TimerRouting {
-        object Idle : TimerRouting()
         object Break : TimerRouting()
     }
 }
