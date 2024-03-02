@@ -4,7 +4,10 @@ import com.example.todopomodoro.Fakes.Fakes
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.repository.Repository
 import com.example.todopomodoro.utils.time.Timer
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.subscribe
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.anyLong
@@ -42,7 +45,6 @@ class TimerViewModelTest {
     fun `ON onStartClicked SHOULD start timer`() {
         val timer: Timer = mock()
         val time = TimeUnit.MINUTES.toMillis(20)
-        val interval = TimeUnit.SECONDS.toMillis(1)
         val itemsRepository: Repository<ItemEntity> = mock()
 
         `when`(itemsRepository.getAll()).thenReturn(listOf(Fakes.item))
@@ -77,24 +79,6 @@ class TimerViewModelTest {
         assertEquals(
             timeLeft,
             sut.state.value.timeLeft,
-        )
-    }
-
-    @Test
-    fun `ON onStartClicked SHOULD update state title`() {
-        val timer: Timer = mock()
-        val captor: ArgumentCaptor<() -> Unit> = ArgumentCaptor.captor()
-
-        with(captor) {
-            `when`(timer.start(anyLong(), any(), kapture())).then { value.invoke() }
-        }
-
-        val sut = sut(timer = timer)
-            .apply { onStartClicked() }
-
-        assertEquals(
-            "Done",
-            sut.state.value.title,
         )
     }
 

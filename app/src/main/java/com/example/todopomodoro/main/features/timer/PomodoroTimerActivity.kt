@@ -28,7 +28,8 @@ class PomodoroTimerActivity : FragmentActivity() {
                         replace(
                             view.id,
                             TimerFragment.newInstance(
-                                intent.getStringExtra(EXTRA_ITEM_ID)!!
+                                itemId = intent.getStringExtra(EXTRA_ITEM_ID)!!,
+                                containerId = view.id
                             )
                         )
                     }

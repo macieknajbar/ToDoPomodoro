@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.features.timer.main.di.timerViewModel
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
@@ -35,8 +36,12 @@ import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 import com.example.todopomodoro.utils.viewModel
 
 class TimerFragment : Fragment() {
+
+    private val itemId by lazy { requireArguments().getString(EXTRA_ITEM_ID, "") }
+    private val containerId by lazy { requireArguments().getInt(EXTRA_CONTAINER_ID, 0) }
+
     private val viewModel by viewModel {
-        timerViewModel(itemId = requireArguments().getString(EXTRA_ITEM_ID, ""))
+        timerViewModel(itemId = itemId)
     }
 
     override fun onCreateView(
@@ -44,6 +49,17 @@ class TimerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        viewModel.routing.observe(viewLifecycleOwner) {
+            println("Magic: $it")
+            when (it) {
+                TimerViewModel.TimerRouting.Idle -> Unit
+                TimerViewModel.TimerRouting.Break -> parentFragmentManager.commit {
+                    replace(containerId, newInstance(itemId, containerId, true))
+                    addToBackStack(null)
+                }
+            }
+        }
+
         return ComposeView(requireContext()).apply {
             setContent {
                 Screen(
@@ -56,11 +72,15 @@ class TimerFragment : Fragment() {
 
     companion object {
         private const val EXTRA_ITEM_ID = "todopomodoro:TimerFragment:EXTRA_ITEM_ID"
+        private const val EXTRA_CONTAINER_ID = "todopomodoro:TimerFragment:EXTRA_CONTAINER_ID"
+        private const val EXTRA_IS_BREAK = "todopomodoro:TimerFragment:EXTRA_IS_BREAK"
 
-        fun newInstance(itemId: String): TimerFragment {
+        fun newInstance(itemId: String, containerId: Int, isBreak: Boolean = false): TimerFragment {
             return TimerFragment().apply {
                 arguments = bundleOf(
-                    EXTRA_ITEM_ID to itemId
+                    EXTRA_ITEM_ID to itemId,
+                    EXTRA_CONTAINER_ID to containerId,
+                    EXTRA_IS_BREAK to isBreak,
                 )
             }
         }
