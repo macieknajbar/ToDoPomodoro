@@ -43,7 +43,7 @@ class PomodoroBreakViewModel(
     }
 
     data class BreakState(
-        val timeLeft: Long = TimeUnit.SECONDS.toMillis(3),
+        val timeLeft: Long = TimeUnit.SECONDS.toMillis(10),
     )
 
     data class BreakViewState(

@@ -1,21 +1,25 @@
 package com.example.todopomodoro.utils.time
 
-import kotlin.concurrent.thread
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 class TimerImpl(
     private val timestampProvider: TimestampProvider,
 ) : Timer {
+    private val executor = Executors.newSingleThreadExecutor()
+    private var task: Future<*>? = null
 
     override fun start(
         time: Long,
         onUpdate: (Long) -> Unit,
         onComplete: () -> Unit,
     ) {
-        thread {
+        task?.cancel(true)
+        task = executor.submit {
             val now = timestampProvider.get()
             val timeEnd = now + time
             var timestamp = 0L
-            while (timestamp < timeEnd) {
+            while (!Thread.currentThread().isInterrupted && timestamp < timeEnd) {
                 timestamp = startSync(
                     timeEnd = timeEnd,
                     lastTime = timestamp,

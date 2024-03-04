@@ -13,7 +13,8 @@ fun todayTimestampProvider(): TimestampProvider = todayTimestampProvider
 
 fun realtimeTimestampProvider(): TimestampProvider = RealtimeTimestampProvider
 
-fun timer(): Timer = TimerImpl(timestampProvider = realtimeTimestampProvider())
+private val timer = TimerImpl(timestampProvider = realtimeTimestampProvider())
+fun timer(): Timer = timer
 
 fun dateFormatter(pattern: String): DateFormatter = SimpleDateFormatter(pattern)
 
