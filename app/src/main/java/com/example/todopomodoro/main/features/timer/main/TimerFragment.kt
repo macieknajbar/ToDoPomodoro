@@ -32,6 +32,7 @@ import androidx.fragment.app.commit
 import com.example.todopomodoro.R
 import com.example.todopomodoro.main.features.timer.main.di.timerViewModel
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
+import com.example.todopomodoro.main.features.timer.pomodorobreak.PomodoroBreakFragment
 import com.example.todopomodoro.ui.theme.ToDoPomodoroTheme
 import com.example.todopomodoro.utils.viewModel
 
@@ -51,7 +52,7 @@ class TimerFragment : Fragment() {
         viewModel.onNavigation {
             when (it) {
                 TimerViewModel.TimerRouting.Break -> parentFragmentManager.commit {
-                    replace(R.id.fragment_container, newInstance(itemId, true))
+                    replace(R.id.fragment_container, PomodoroBreakFragment())
                     addToBackStack(null)
                 }
             }

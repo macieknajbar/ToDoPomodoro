@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.todopomodoro.domain.ItemEntity
 import com.example.todopomodoro.main.features.timer.main.model.TimerViewState
 import com.example.todopomodoro.repository.Repository
+import com.example.todopomodoro.utils.router.Router
 import com.example.todopomodoro.utils.time.Timer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,7 @@ class TimerViewModel(
             timeText = "$minutes:${"00$seconds".substring(seconds.length)}"
         )
     }
-    private var router: Router<TimerRouting>? = null
+    private lateinit var router: Router<TimerRouting>
 
     init {
         val item = itemsRepository.getAll()
@@ -43,26 +44,20 @@ class TimerViewModel(
         timer.start(
             time = state.value.timeLeft,
             onUpdate = { timeLeft -> state.update { it.copy(timeLeft = timeLeft) } },
-        ) { router?.goTo(TimerRouting.Break) }
+        ) {
+            state.update { it.copy(timeLeft = it.initialTime) }
+            router.goTo(TimerRouting.Break)
+        }
     }
 
     fun onNavigation(block: (TimerRouting) -> Unit) {
         router = Router(block)
     }
 
-    class Router<T>(val routing: (T) -> Unit) {
-        fun goTo(screen: T) {
-            try {
-                routing(screen)
-            } catch (e: Exception) {
-                // intentionally empty
-            }
-        }
-    }
-
     data class TimerState(
+        val initialTime: Long = TimeUnit.SECONDS.toMillis(5),
         val title: String = "",
-        val timeLeft: Long = TimeUnit.SECONDS.toMillis(5),
+        val timeLeft: Long = initialTime,
     )
 
     sealed class TimerRouting {
